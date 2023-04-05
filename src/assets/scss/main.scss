@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "font-face";
+
+:root {
+  --app-height: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  position: relative;
+  font-weight: normal;
+}
+
+textarea,
+input {
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+html, body, #app {
+  height: 100vh;
+  height: var(--app-height);
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: #1b1b25;
+  font-family: "General Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2;
+  background-color: #fff;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
