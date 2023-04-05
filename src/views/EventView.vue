@@ -61,7 +61,7 @@ import { useRoute } from "vue-router";
 import { RouterLink } from "vue-router";
 // @ts-ignore
 import VueMarkdown from "vue-markdown-render";
-import { IEvent } from "@/ts/interfaces/event";
+import type { IEvent } from "@/ts/interfaces/event";
 import delay from "@/utils/delay";
 import padToTwoDigits from "@/utils/pad-to-two-digits";
 import api from "@/api";
