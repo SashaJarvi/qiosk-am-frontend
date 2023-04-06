@@ -14,7 +14,6 @@ module.exports = {
       },
       fontFamily: {
         grotesk: "Cabinet Grotesk, sans-serif",
-        caveat: "Caveat, sans-serif",
       },
     },
   },
