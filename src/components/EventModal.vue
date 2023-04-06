@@ -14,7 +14,7 @@
         class="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-50"
         @click.stop="emit('close-modal')"
       >
-        <div class="flex items-start justify-center min-h-screen pt-8 text-center">
+        <div class="flex items-start justify-center min-h-screen py-8 text-center">
           <transition
             enter-active-class="transition ease-out duration-300 transform "
             enter-from-class="opacity-0 translate-y-10 scale-95"
@@ -24,7 +24,7 @@
             leave-to-class="opacity-0 translate-y-10 translate-y-0 scale-95"
           >
             <div
-              class="relative bg-white rounded-lg text-left overflow-hidden shadow-xl p-8 w-2/3"
+              class="relative bg-white rounded-lg text-left overflow-hidden shadow-xl px-4 py-8 sm:p-8 w-[calc(100%-16px)] sm:w-2/3"
               role="dialog"
               ref="modal"
               aria-modal="true"

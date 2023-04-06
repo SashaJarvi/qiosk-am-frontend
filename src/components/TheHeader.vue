@@ -2,7 +2,9 @@
   <header class="header relative">
     <header-image :image="image" />
     <div class="absolute top-0 right-0 bottom-0 left-0 grid place-items-center text-white">
-      <h1 class="title text-[48px] font-bold drop-shadow-md shadow-black-base">Билеты на мероприятия</h1>
+      <h1 class="title text-[32px] sm:text-[48px] font-bold text-center drop-shadow-md shadow-black-base">
+        Билеты на мероприятия
+      </h1>
     </div>
   </header>
 </template>
