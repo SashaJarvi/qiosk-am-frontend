@@ -21,20 +21,29 @@
     <hr class="w-full h-[1px] my-[16px] sm:my-[18px] bg-black-base border-0" />
 
     <div class="container mx-auto px-[18px]">
-      <div class="flex justify-between items-center gap-[16px] flex-wrap">
-        <div class="flex gap-[8px]">
-          <a
-            v-for="{ href, icon } in socialLinks"
-            :key="href"
-            class="grid place-items-center w-[18px] h-[18px] sm:w-[24px] sm:h-[24px]"
-            :href="href"
-            target="_blank"
-          >
-            <img :src="`/images/icons/${icon}.svg`" :alt="icon" />
-          </a>
+      <div class="flex justify-between items-center gap-[32px] flex-wrap min-[480px]:flex-nowrap">
+        <div class="flex justify-between items-center gap-[12px] w-full">
+          <div class="flex gap-[8px]">
+            <a
+              v-for="{ href, icon } in socialLinks"
+              :key="href"
+              class="grid place-items-center w-[18px] h-[18px] sm:w-[24px] sm:h-[24px]"
+              :href="href"
+              target="_blank"
+            >
+              <img :src="`/images/icons/${icon}.svg`" :alt="icon" />
+            </a>
+          </div>
+
+          <router-link to="/refund-policy" class="text-[14px] sm:text-[16px] font-medium">
+            Политика возврата билетов
+          </router-link>
         </div>
 
-        <p class="text-[14px] sm:text-[16px] font-medium">© {{ currentYear }} qiosk.am</p>
+        <!--        <div class="flex items-baseline gap-[12px]">-->
+        <!--          -->
+        <!--        </div>-->
+        <p class="text-[14px] sm:text-[16px] font-medium whitespace-nowrap">© {{ currentYear }} qiosk.am</p>
       </div>
     </div>
   </footer>
