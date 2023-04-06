@@ -48,7 +48,7 @@
                       </p>
                       <p class="grid grid-cols-[16px_1fr] items-stretch gap-[8px]">
                         <icon-calendar-check />
-                        <span class="font-medium uppercase">{{ date }} {{ month }}, {{ time }}</span>
+                        <span class="font-medium lowercase">{{ date }} {{ month }}, {{ time }}</span>
                       </p>
                       <p class="grid grid-cols-[16px_1fr] items-stretch gap-[8px] font-medium">
                         <icon-money /> {{ priceRange }}
@@ -124,18 +124,18 @@ const eventDate = computed<Date>(() => new Date((event.value as IEvent)?.attribu
 const date = computed<any>(() => padToTwoDigits(eventDate.value.getDate()));
 const month = computed<string>(() => {
   const monthObject = {
-    Jan: "Янв",
-    Feb: "Фев",
-    Mar: "Мар",
-    Apr: "Апр",
+    Jan: "Янв.",
+    Feb: "Фев.",
+    Mar: "Мар.",
+    Apr: "Апр.",
     May: "Мая",
-    Jun: "Июн",
-    Jul: "Июл",
-    Aug: "Авг",
-    Sep: "Сен",
-    Oct: "Окт",
-    Nov: "Ноя",
-    Dec: "Дек",
+    Jun: "Июн.",
+    Jul: "Июл.",
+    Aug: "Авг.",
+    Sep: "Сен.",
+    Oct: "Окт.",
+    Nov: "Ноя.",
+    Dec: "Дек.",
   };
   const dateStr = eventDate.value.toDateString();
   const dateStrArr = dateStr.split(" ");
