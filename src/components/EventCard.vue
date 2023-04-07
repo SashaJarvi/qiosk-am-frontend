@@ -25,7 +25,7 @@
         >
 
         <button
-          class="block w-fit p-[8px] text-black-base text-[14px] sm:text-[16px] bg-white border border-black-base rounded-[4px] shadow-lg shadow-black-base/0 hover:shadow-black-base/50 transition delay-150 duration-300 ease-in-out"
+          class="block w-fit p-[8px] text-black-base text-[14px] sm:text-[16px] bg-white border border-black-base rounded-[4px] shadow-lg shadow-black-base/0 hover:shadow-black-base/40 transition delay-150 duration-300 ease-in-out"
           @click.stop="emit('show-event-details', event.id)"
         >
           Подробнее
