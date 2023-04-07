@@ -14,7 +14,7 @@
         class="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-50"
         @click.stop="emit('close-modal')"
       >
-        <div class="flex items-start justify-center min-h-screen py-8 text-center">
+        <div class="flex items-center justify-center min-h-screen py-8 text-center">
           <transition
             enter-active-class="transition ease-out duration-300 transform "
             enter-from-class="opacity-0 translate-y-10 scale-95"
@@ -43,16 +43,14 @@
                     <img class="w-[320px] h-[240px] object-cover" :src="coverUrl" alt="" />
 
                     <div class="flex flex-col gap-[8px]">
-                      <p class="grid grid-cols-[16px_1fr] items-stretch gap-[8px] font-medium">
-                        <icon-map-pin /> {{ event.attributes.location }}
+                      <p class="grid grid-cols-[16px_1fr] items-stretch gap-[8px]">
+                        <icon-map /> {{ event.attributes.location }}
                       </p>
                       <p class="grid grid-cols-[16px_1fr] items-stretch gap-[8px]">
-                        <icon-calendar-check />
-                        <span class="font-medium lowercase">{{ date }} {{ month }}, {{ time }}</span>
+                        <icon-calendar />
+                        <span class="lowercase">{{ date }} {{ month }}, {{ time }}</span>
                       </p>
-                      <p class="grid grid-cols-[16px_1fr] items-stretch gap-[8px] font-medium">
-                        <icon-money /> {{ priceRange }}
-                      </p>
+                      <p class="grid grid-cols-[16px_1fr] items-stretch gap-[8px]"><icon-card /> {{ priceRange }}</p>
                     </div>
                   </div>
                 </div>
@@ -94,9 +92,9 @@ import { computed, ref, watch } from "vue";
 import type { Ref } from "vue";
 import VueMarkdown from "vue-markdown-render";
 import IconX from "~icons/ph/x";
-import IconCalendarCheck from "~icons/ph/calendar-check";
-import IconMoney from "~icons/ph/money";
-import IconMapPin from "~icons/ph/map-pin";
+import IconCalendar from "~icons/emojione/tear-off-calendar";
+import IconCard from "~icons/emojione/credit-card";
+import IconMap from "~icons/emojione/world-map";
 import type { IEvent } from "@/ts/interfaces/event";
 import api from "@/api";
 import padToTwoDigits from "@/utils/pad-to-two-digits";
