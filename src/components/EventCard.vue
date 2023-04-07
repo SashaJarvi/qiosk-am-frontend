@@ -22,6 +22,7 @@
 
         <a
           :href="event.attributes.tickets_link"
+          @click.stop.prevent="goForTickets"
           target="_blank"
           rel="noopener noreferrer nofollow"
           class="block w-fit p-[8px] text-black-base text-[14px] sm:text-[16px] bg-yellow-base border border-yellow-base rounded-[4px] shadow-lg shadow-yellow-base-dark/0 hover:shadow-yellow-base-dark/100 transition delay-150 duration-300 ease-in-out"
@@ -87,6 +88,14 @@ const priceRange = computed<string>(() => {
     ? `${props.event.attributes.min_price} – ${props.event.attributes.max_price}`
     : `${props.event.attributes.min_price}`;
 });
+
+const goForTickets = (e: UIEvent) => {
+  window.open(
+    (e.target as HTMLLinkElement).href,
+    (e.target as HTMLLinkElement).target,
+    (e.target as HTMLLinkElement).rel,
+  );
+};
 </script>
 
 <style scoped></style>
