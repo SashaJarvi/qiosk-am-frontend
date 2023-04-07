@@ -37,7 +37,7 @@
 
               <article v-if="event">
                 <div class="mb-[32px]">
-                  <h1 class="mb-[32px] text-[24px] leading-[32px]">{{ event.attributes.title }}</h1>
+                  <h1 class="mb-[32px] text-[24px] font-bold leading-[32px]">{{ event.attributes.title }}</h1>
 
                   <div class="flex flex-col md:flex-row items-start gap-[24px]">
                     <img class="w-[320px] h-[240px] object-cover" :src="coverUrl" alt="" />
