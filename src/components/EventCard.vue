@@ -1,33 +1,35 @@
 <template>
   <article @click.stop="emit('show-event-details', event.id)" class="flex flex-col border border-grey-4 cursor-pointer">
-    <img class="w-full h-[200px] sm:h-[300px] object-cover" :src="coverUrl" :alt="event.attributes.title" />
+    <div class="w-full h-[200px] md:h-[300px]">
+      <img class="w-full h-full object-cover" :src="coverUrl" :alt="event.attributes.title" />
+    </div>
 
     <div class="flex flex-col h-full p-[12px] sm:py-[16px] sm:px-[22px]">
-      <div class="flex flex-col flex-1 gap-[12px]">
-        <h2 class="font-medium">{{ event.attributes.title }}</h2>
-        <p class="grid grid-cols-[16px_1fr] items-center gap-[6px] lowercase">
-          <icon-calendar-check />{{ date }} {{ month }} в {{ time }}
+      <div class="flex flex-col flex-1 gap-[12px] h-full">
+        <h2 class="flex-1 font-bold">{{ event.attributes.title }}</h2>
+        <p class="grid grid-cols-[16px_1fr] items-stretch gap-[8px] lowercase">
+          <icon-calendar />{{ date }} {{ month }} в {{ time }}
         </p>
-        <p class="grid grid-cols-[16px_1fr] items-center gap-[6px]"><icon-map-pin />{{ event.attributes.location }}</p>
-        <p class="grid grid-cols-[16px_1fr] items-center gap-[6px]"><icon-money />{{ priceRange }}</p>
+        <p class="grid grid-cols-[16px_1fr] items-stretch gap-[8px]"><icon-map />{{ event.attributes.location }}</p>
+        <p class="grid grid-cols-[16px_1fr] items-stretch gap-[8px]"><icon-card />{{ priceRange }}</p>
       </div>
 
       <div class="flex flex-wrap items-center gap-[8px] mt-[16px]">
-        <button
-          class="block w-fit p-[8px] text-black-base text-[14px] sm:text-[16px] bg-white border border-yellow-base rounded-[4px] shadow-lg shadow-yellow-base-dark/0 hover:shadow-yellow-base-dark/100 transition delay-150 duration-300 ease-in-out"
-          @click="emit('show-event-details', event.id)"
-        >
-          Подробнее
-        </button>
-
         <a
           :href="event.attributes.tickets_link"
           @click.stop.prevent="goForTickets"
           target="_blank"
           rel="noopener noreferrer nofollow"
-          class="block w-fit p-[8px] text-black-base text-[14px] sm:text-[16px] bg-yellow-base border border-yellow-base rounded-[4px] shadow-lg shadow-yellow-base-dark/0 hover:shadow-yellow-base-dark/100 transition delay-150 duration-300 ease-in-out"
+          class="block w-fit p-[8px] text-black-base text-[14px] sm:text-[16px] bg-yellow-base border border-yellow-base rounded-[4px] shadow-lg shadow-yellow-base-dark/0 hover:shadow-yellow-base-dark/70 transition delay-150 duration-300 ease-in-out"
           >Купить билет</a
         >
+
+        <button
+          class="block w-fit p-[8px] text-black-base text-[14px] sm:text-[16px] bg-white border border-black-base rounded-[4px] shadow-lg shadow-black-base/0 hover:shadow-black-base/50 transition delay-150 duration-300 ease-in-out"
+          @click.stop="emit('show-event-details', event.id)"
+        >
+          Подробнее
+        </button>
       </div>
     </div>
   </article>
@@ -35,9 +37,9 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import IconCalendarCheck from "~icons/ph/calendar-check";
-import IconMoney from "~icons/ph/money";
-import IconMapPin from "~icons/ph/map-pin";
+import IconCalendar from "~icons/emojione/tear-off-calendar";
+import IconCard from "~icons/emojione/credit-card";
+import IconMap from "~icons/emojione/world-map";
 import type { IEvent } from "@/ts/interfaces/event";
 import padToTwoDigits from "@/utils/pad-to-two-digits";
 

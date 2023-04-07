@@ -1,7 +1,7 @@
 <template>
   <header class="header relative">
     <header-image :image="image" />
-    <div class="absolute top-0 right-0 bottom-0 left-0 grid place-items-center text-white">
+    <div class="absolute top-0 right-0 bottom-0 left-0 grid place-items-center text-white bg-black/60">
       <h1 class="title text-[32px] sm:text-[48px] font-bold text-center drop-shadow-md shadow-black-base">
         Билеты на мероприятия
       </h1>
@@ -21,11 +21,4 @@ const image = computed<string>(() => {
 });
 </script>
 
-<style lang="scss" scoped>
-.header {
-  h1 {
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: rgb(34, 40, 48);
-  }
-}
-</style>
+<style lang="scss" scoped></style>
