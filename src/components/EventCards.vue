@@ -23,14 +23,14 @@ const selectedEventId: Ref<number | null> = ref(null);
 
 const showModal = (id: number): void => {
   isModalShown.value = true;
-  selectedEventId.value = id;
   bodyScrollLock.enable();
+  selectedEventId.value = id;
 };
 
 const closeModal = (): void => {
   isModalShown.value = false;
-  selectedEventId.value = null;
   bodyScrollLock.disable();
+  selectedEventId.value = null;
 };
 </script>
 

@@ -12,7 +12,13 @@
             :key="paymentItem"
             class="grid place-items-center bg-white rounded-[5px]"
           >
-            <img class="max-w-full h-auto object-cover" :src="`/images/icons/${paymentItem}.svg`" :alt="paymentItem" />
+            <img
+              width="60"
+              height="30"
+              class="max-w-full h-auto object-cover"
+              :src="`/images/icons/${paymentItem}.svg`"
+              :alt="paymentItem"
+            />
           </div>
         </div>
       </div>
@@ -31,7 +37,7 @@
               :href="href"
               target="_blank"
             >
-              <img :src="`/images/icons/${icon}.svg`" :alt="icon" />
+              <img width="24" height="24" :src="`/images/icons/${icon}.svg`" :alt="icon" />
             </a>
           </div>
 
@@ -40,9 +46,6 @@
           </router-link>
         </div>
 
-        <!--        <div class="flex items-baseline gap-[12px]">-->
-        <!--          -->
-        <!--        </div>-->
         <p class="text-[14px] sm:text-[16px] font-medium whitespace-nowrap">© {{ currentYear }} qiosk.am</p>
       </div>
     </div>
