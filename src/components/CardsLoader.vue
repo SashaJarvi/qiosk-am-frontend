@@ -1,6 +1,6 @@
 <template>
   <div class="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-[16px] py-[48px]">
-    <div v-for="i in 4" :key="i" class="border border-grey-4">
+    <div v-for="i in 4" :key="i" class="border border-black-base/10">
       <div class="animate-pulse flex flex-col">
         <div class="w-full h-[200px] bg-slate-300"></div>
 

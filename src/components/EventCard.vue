@@ -1,5 +1,8 @@
 <template>
-  <article @click.stop="emit('show-event-details', event.id)" class="flex flex-col border border-grey-4 cursor-pointer">
+  <article
+    @click.stop="emit('show-event-details', event.id)"
+    class="flex flex-col border border-black-base/10 cursor-pointer"
+  >
     <div class="w-full h-[200px] md:h-[300px]">
       <img class="w-full h-full object-cover" :src="coverUrl" :alt="event.attributes.title" />
     </div>
@@ -20,12 +23,12 @@
           @click.stop.prevent="goForTickets"
           target="_blank"
           rel="noopener noreferrer nofollow"
-          class="block w-fit p-[8px] text-black-base text-[14px] sm:text-[16px] bg-yellow-base border border-yellow-base rounded-[4px] shadow-lg shadow-yellow-base-dark/0 hover:shadow-yellow-base-dark/70 transition delay-150 duration-300 ease-in-out"
+          class="block w-fit p-[8px] text-black-base text-[14px] sm:text-[16px] bg-yellow-base border border-yellow-base rounded-[4px] shadow-lg shadow-yellow-base-dark/0 hover:shadow-yellow-base-dark/60 transition delay-150 duration-300 ease-in-out"
           >Купить билет</a
         >
 
         <button
-          class="block w-fit p-[8px] text-black-base text-[14px] sm:text-[16px] bg-white border border-black-base rounded-[4px] shadow-lg shadow-black-base/0 hover:shadow-black-base/40 transition delay-150 duration-300 ease-in-out"
+          class="block w-fit p-[8px] text-black-base text-[14px] sm:text-[16px] bg-white border border-black-base rounded-[4px] shadow-lg shadow-black-base/0 hover:shadow-black-base/20 transition delay-150 duration-300 ease-in-out"
           @click.stop="emit('show-event-details', event.id)"
         >
           Подробнее

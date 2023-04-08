@@ -71,7 +71,7 @@
                     :href="event.attributes.tickets_link"
                     target="_blank"
                     rel="noopener"
-                    class="p-[10px_16px] text-black-base text-[14px] sm:text-[16px] bg-yellow-base border border-yellow-base rounded-[4px] shadow-lg shadow-yellow-base-dark/0 hover:shadow-yellow-base-dark/100 transition delay-150 duration-300 ease-in-out"
+                    class="p-[10px_16px] text-black-base text-[14px] sm:text-[16px] bg-yellow-base border border-yellow-base rounded-[4px] shadow-lg shadow-yellow-base-dark/0 hover:shadow-yellow-base-dark/60 transition delay-150 duration-300 ease-in-out"
                   >
                     Купить билет
                   </a>
