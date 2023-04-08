@@ -11,7 +11,7 @@
       <div class="flex flex-col flex-1 gap-[12px] h-full">
         <h2 class="flex-1 font-bold">{{ event.attributes.title }}</h2>
         <p class="grid grid-cols-[16px_1fr] items-stretch gap-[8px] lowercase">
-          <icon-calendar />{{ date }} {{ month }} в {{ time }}
+          <icon-calendar />{{ date }} {{ month }} {{ year }} в {{ time }}
         </p>
         <p class="grid grid-cols-[16px_1fr] items-stretch gap-[8px]"><icon-map />{{ event.attributes.location }}</p>
         <p class="grid grid-cols-[16px_1fr] items-stretch gap-[8px]"><icon-card />{{ priceRange }}</p>
@@ -44,7 +44,7 @@ import IconCalendar from "~icons/emojione/tear-off-calendar";
 import IconCard from "~icons/emojione/credit-card";
 import IconMap from "~icons/emojione/world-map";
 import type { IEvent } from "@/ts/interfaces/event";
-import padToTwoDigits from "@/utils/pad-to-two-digits";
+import { useEventComputed } from "@/composables/event-computed";
 
 const props = defineProps<{
   event: IEvent;
@@ -54,44 +54,14 @@ const emit = defineEmits<{
   (e: "show-event-details", id: number): void;
 }>();
 
+const { date, month, year, time, priceRange } = useEventComputed(
+  props.event.attributes.datetime,
+  props.event.attributes.min_price,
+  props.event.attributes.max_price,
+);
+
 const coverUrl = computed<string>(() => {
   return `${import.meta.env.VITE_BACKEND_URL}${props.event.attributes.cover.data.attributes.url}`;
-});
-
-const eventDate = computed<Date>(() => new Date(props.event.attributes.datetime));
-
-const date = computed<any>(() => padToTwoDigits(eventDate.value.getDate()));
-
-const month = computed<string>(() => {
-  const monthObject = {
-    Jan: "Янв.",
-    Feb: "Фев.",
-    Mar: "Мар.",
-    Apr: "Апр.",
-    May: "Мая",
-    Jun: "Июн.",
-    Jul: "Июл.",
-    Aug: "Авг.",
-    Sep: "Сен.",
-    Oct: "Окт.",
-    Nov: "Ноя.",
-    Dec: "Дек.",
-  };
-  const dateStr = eventDate.value.toDateString();
-  const dateStrArr = dateStr.split(" ");
-  const monthStr: string = dateStrArr[1];
-
-  return monthObject[monthStr as keyof typeof monthObject];
-});
-
-const time = computed<string>(() => {
-  return `${padToTwoDigits(eventDate.value.getHours())}:${padToTwoDigits(eventDate.value.getMinutes())}`;
-});
-
-const priceRange = computed<string>(() => {
-  return props.event.attributes.max_price
-    ? `${props.event.attributes.min_price} – ${props.event.attributes.max_price}`
-    : `${props.event.attributes.min_price}`;
 });
 
 const goForTickets = (e: UIEvent) => {

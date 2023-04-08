@@ -48,9 +48,13 @@
                       </p>
                       <p class="grid grid-cols-[16px_1fr] items-stretch gap-[8px]">
                         <icon-calendar />
-                        <span class="lowercase">{{ date }} {{ month }}, {{ time }}</span>
+                        <span class="lowercase"
+                          >{{ eventInfo.date }} {{ eventInfo.month }} {{ eventInfo.year }}, {{ eventInfo.time }}</span
+                        >
                       </p>
-                      <p class="grid grid-cols-[16px_1fr] items-stretch gap-[8px]"><icon-card /> {{ priceRange }}</p>
+                      <p class="grid grid-cols-[16px_1fr] items-stretch gap-[8px]">
+                        <icon-card /> {{ eventInfo.priceRange }}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -88,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, ref, reactive, watch } from "vue";
 import type { Ref } from "vue";
 import VueMarkdown from "vue-markdown-render";
 import IconX from "~icons/ph/x";
@@ -97,9 +101,17 @@ import IconCard from "~icons/emojione/credit-card";
 import IconMap from "~icons/emojione/world-map";
 import type { IEvent } from "@/ts/interfaces/event";
 import api from "@/api";
-import padToTwoDigits from "@/utils/pad-to-two-digits";
 import delay from "@/utils/delay";
+import { useEventComputed } from "@/composables/event-computed";
 import EventLoader from "@/components/EventLoader.vue";
+
+interface IEventInfo {
+  date: string | undefined;
+  month: string | undefined;
+  year: string | undefined;
+  time: string | undefined;
+  priceRange: string | undefined;
+}
 
 const props = defineProps<{
   show: boolean;
@@ -114,42 +126,16 @@ const showModal: Ref<boolean> = ref(false);
 const eventId: Ref<number | null> = ref(null);
 const isLoading: Ref<boolean> = ref(false);
 const event: Ref<IEvent | null> = ref(null);
+const eventInfo = reactive<IEventInfo>({
+  date: "",
+  month: "",
+  year: "",
+  time: "",
+  priceRange: "",
+});
 
 const coverUrl = computed<string>(() => {
   return `${import.meta.env.VITE_BACKEND_URL}${event.value?.attributes.cover.data.attributes.url}`;
-});
-const eventDate = computed<Date>(() => new Date((event.value as IEvent)?.attributes.datetime));
-const date = computed<any>(() => padToTwoDigits(eventDate.value.getDate()));
-const month = computed<string>(() => {
-  const monthObject = {
-    Jan: "Янв.",
-    Feb: "Фев.",
-    Mar: "Мар.",
-    Apr: "Апр.",
-    May: "Мая",
-    Jun: "Июн.",
-    Jul: "Июл.",
-    Aug: "Авг.",
-    Sep: "Сен.",
-    Oct: "Окт.",
-    Nov: "Ноя.",
-    Dec: "Дек.",
-  };
-  const dateStr = eventDate.value.toDateString();
-  const dateStrArr = dateStr.split(" ");
-  const monthStr: string = dateStrArr[1];
-
-  return monthObject[monthStr as keyof typeof monthObject];
-});
-
-const time = computed<string>(() => {
-  return `${padToTwoDigits(eventDate.value.getHours())}:${padToTwoDigits(eventDate.value.getMinutes())}`;
-});
-
-const priceRange = computed<string>(() => {
-  return event.value?.attributes.max_price
-    ? `${event.value?.attributes.min_price} – ${event.value?.attributes.max_price}`
-    : `${event.value?.attributes.min_price}`;
 });
 
 const getEvent = async () => {
@@ -160,6 +146,18 @@ const getEvent = async () => {
     .get(`events/${eventId.value}?populate[0]=cover`)
     .then(res => res.json())
     .then(({ data }) => (event.value = data));
+
+  const { date, month, year, time, priceRange } = useEventComputed(
+    (event.value as IEvent).attributes.datetime,
+    (event.value as IEvent).attributes.min_price,
+    (event.value as IEvent).attributes.max_price,
+  );
+
+  eventInfo.date = date.value;
+  eventInfo.month = month.value;
+  eventInfo.year = year.value;
+  eventInfo.time = time.value;
+  eventInfo.priceRange = priceRange.value;
 
   isLoading.value = false;
 };

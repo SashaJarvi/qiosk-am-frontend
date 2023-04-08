@@ -39,5 +39,3 @@ const getEvents = async () => {
 
 getEvents();
 </script>
-
-<style scoped></style>
