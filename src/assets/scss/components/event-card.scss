@@ -1,0 +1,39 @@
+.card__organization {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 77%);
+
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 33px;
+
+  width: 588px;
+  background: #ffdd00;
+  border-radius: 5px;
+}
+
+.card__organization-item {
+  display: flex;
+  flex-direction: column;
+  row-gap: 21px;
+}
+
+.card__organization-title {
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+  font-size: 15px;
+  font-weight: 400;
+
+  img {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+.card__organization-descr {
+  max-width: 172px;
+  font-weight: 700;
+  font-size: 16px;
+}

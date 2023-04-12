@@ -1,20 +1,15 @@
 <template>
-  <main>
-    <div class="container mx-auto px-[16px]">
-      <article class="py-[48px]">
-        <router-link
-          to="/"
-          class="inline-block mb-[32px] p-[10px_16px] text-black-base bg-white border border-yellow-base rounded-[4px]"
-        >
-          К списку мероприятий
-        </router-link>
+  <main class="policy">
+    <div class="container">
+      <article class="policy__content">
+        <router-link to="/" class=""> К списку мероприятий </router-link>
 
-        <h1 class="text-[22px] sm:text-[28px] font-bold mb-[16px] text-center uppercase">Политика возврата билетов</h1>
+        <h1 class="">Политика возврата билетов</h1>
 
-        <div class="mb-[20px] text-[16px] sm:text-[18px]">
+        <div class="">
           1. Возврат денежных средств за билеты, приобретённые у Агента на сайте https://msk.kassir.ru/ или в кассах
           KASSIR.RU (Точках продаж) города Москвы и Московской области, осуществляется в порядке и на условиях:
-          <ul class="policy-list mt-[8px] pl-[16px]">
+          <ul class="">
             <li>
               Публичной Оферты, размещённой на сайте https://msk.kassir.ru/pages/oferta и непосредственно в кассах
               продаж;
@@ -38,10 +33,10 @@
           </ul>
         </div>
 
-        <div class="text-[16px] sm:text-[18px]">
+        <div class="">
           2. Возврат денежных средств за билеты, приобретённые у Агента на сайте https://msk.kassir.ru/ или в кассах
           KASSIR.RU (Точках продаж) города Москвы и Московской области, осуществляется в порядке и на условиях:
-          <ul class="policy-list mt-[8px] pl-[16px]">
+          <ul class="">
             <li>
               Публичной Оферты, размещённой на сайте https://msk.kassir.ru/pages/oferta и непосредственно в кассах
               продаж;
@@ -74,6 +69,12 @@ import { RouterLink } from "vue-router";
 </script>
 
 <style lang="scss" scoped>
+.policy {
+  &__content {
+    padding: 48px 0;
+  }
+}
+
 .policy-list {
   li::before {
     content: "• ";

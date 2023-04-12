@@ -1,0 +1,180 @@
+.write-btn {
+  height: 40px;
+  padding: 0 15px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 40px;
+  background-color: #ffdd00;
+  border-radius: 5px;
+  transition: background-color 0.2s linear;
+
+
+  &:hover,
+  &:focus {
+    background-color: #f3d40f;
+  }
+
+  &:active {
+    background-color: #e5c910;
+  }
+
+  //&:onclick {
+  //   background-color: #e5c910;
+  //}
+}
+
+.btn {
+  width: 121px;
+  height: 40px;
+  padding: 0 20px;
+  color: #000;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 40px;
+  text-transform: uppercase;
+  background-color: #fff;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  transition: 0.2s linear;
+
+  &:hover,
+  &:focus {
+    background-color: #000;
+    color: #fff;
+  }
+
+  &:active {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+  }
+
+  //&:onclick {
+  //   background-color: #000;
+  //   color: #fff;
+  //}
+}
+
+.read-more {
+  height: 40px;
+  padding: 0 27px;
+  color: #000;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 35px;
+  border: 2px solid #000000;
+  border-radius: 5px;
+  transition: 0.2s linear;
+
+  &:hover,
+  &:focus {
+    background-color: #000;
+    color: #fff;
+  }
+
+  &:active {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+  }
+
+  //&:onclick {
+  //   background-color: #000;
+  //   color: #fff;
+  //}
+}
+
+.btn-buy {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 20px;
+  height: 40px;
+  padding: 0 20px 0 23px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 35px;
+  background-color: #ae040e;
+  border: 2px solid #ae040e;
+  box-shadow: 0px 0px 38px rgba(255, 255, 255, 0.72);
+  border-radius: 5px;
+  transition: 0.2s linear;
+
+  img {
+    width: 25px;
+    height: 25px;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: #f20716;
+    border: 2px solid #f20716;
+    color: #fff;
+  }
+
+  &:active {
+    background-color: #b71621;
+    border: 2px solid #b71621;
+    color: #fff;
+  }
+
+  //&:onclick {
+  //   background-color: #b71621;
+  //   border: 2px solid #b71621;
+  //   color: #fff;
+  //}
+}
+
+.add-more {
+  display: flex;
+  align-items: center;
+  column-gap: 23px;
+  height: 50px;
+  margin-top: 67px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 23px;
+  color: #f5f5f5;
+  font-size: 15px;
+  font-weight: 700;
+  background-color: #000000;
+  border-radius: 5px;
+  transition: background-color 0.2s linear;
+
+  &:hover,
+  &:focus {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  &:active {
+    background-color: rgb(0, 0, 0);
+  }
+}
+
+.hide-cards {
+  display: flex;
+  height: 50px;
+  align-items: center;
+  column-gap: 23px;
+  margin-top: 67px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 23px;
+  color: #f5f5f5;
+  font-size: 15px;
+  font-weight: 700;
+  background-color: #000000;
+  border-radius: 5px;
+  transition: background-color 0.2s linear;
+
+  img {
+    transform: rotate(-180deg);
+  }
+
+  &:hover,
+  &:focus {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  &:active {
+    background-color: rgb(0, 0, 0);
+  }
+}

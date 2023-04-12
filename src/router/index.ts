@@ -10,6 +10,11 @@ const router = createRouter({
       component: HomeView,
     },
     {
+      path: "/event/:eventId",
+      name: "event-page",
+      component: () => import("@/views/EventView.vue"),
+    },
+    {
       path: "/refund-policy",
       name: "refund-policy",
       component: () => import("@/views/RefundPolicyView.vue"),

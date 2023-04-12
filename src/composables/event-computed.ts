@@ -33,7 +33,7 @@ export function useEventComputed(dateString?: string, minPrice?: number, maxPric
   });
 
   const priceRange = computed<string>(() => {
-    return maxPrice ? `${minPrice} – ${maxPrice}` : `${minPrice}`;
+    return maxPrice ? `${minPrice} AMD – ${maxPrice} AMD` : `${minPrice} AMD`;
   });
 
   return {

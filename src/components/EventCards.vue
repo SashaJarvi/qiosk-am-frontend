@@ -1,9 +1,33 @@
 <template>
-  <div class="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-[16px] py-[48px]">
-    <event-card v-for="event in events" :key="event.id" :event="event" @show-event-details="showModal" />
-  </div>
+  <section class="events">
+    <div class="container">
+      <nav class="events__catalog">
+        <h1 class="events__title">Каталог мероприятий</h1>
+        <ul class="events__category">
+          <li><button class="btn">КИНО</button></li>
+          <li><button class="btn">ТЕАТР</button></li>
+          <li><button class="btn">КОНЦЕРТ</button></li>
+          <li><button class="btn">ЛЕКЦИЯ</button></li>
+          <li><button class="btn">СТЕНДАП</button></li>
+          <li><button class="btn">ПРОЧЕЕ</button></li>
+        </ul>
+      </nav>
 
-  <event-modal :show="isModalShown" :event="selectedEventId" @close-modal="closeModal" />
+      <div class="events__cards">
+        <event-card v-for="event in events" :key="event.id" :event="event" />
+      </div>
+
+      <button class="add-more">
+        <span>Больше мероприятий</span>
+        <img src="/images/arrows/arrow-down.svg" alt="arrow-down" />
+      </button>
+
+      <button class="hide-cards none">
+        <span>Скрыть</span>
+        <img src="/images/arrows/arrow-down.svg" alt="arrow-down" />
+      </button>
+    </div>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -18,20 +42,23 @@ defineProps<{
   events: IEvent[];
 }>();
 
-const isModalShown: Ref<boolean> = ref(false);
+// const isModalShown: Ref<boolean> = ref(false);
 const selectedEventId: Ref<number | null> = ref(null);
 
-const showModal = (id: number): void => {
-  isModalShown.value = true;
-  bodyScrollLock.enable();
-  selectedEventId.value = id;
-};
-
-const closeModal = (): void => {
-  isModalShown.value = false;
-  bodyScrollLock.disable();
-  selectedEventId.value = null;
-};
+// const showModal = (id: number): void => {
+//   isModalShown.value = true;
+//   bodyScrollLock.enable();
+//   selectedEventId.value = id;
+// };
+//
+// const closeModal = (): void => {
+//   isModalShown.value = false;
+//   bodyScrollLock.disable();
+//   selectedEventId.value = null;
+// };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+@import "@/assets/scss/elements/btns";
+@import "@/assets/scss/components/event-cards";
+</style>
