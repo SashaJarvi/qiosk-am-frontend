@@ -1,5 +1,5 @@
 <template>
-  <the-header v-if="$route.name !== 'event'" />
+  <the-header />
   <router-view />
   <the-footer />
 </template>

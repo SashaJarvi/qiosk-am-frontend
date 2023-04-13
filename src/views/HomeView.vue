@@ -1,9 +1,9 @@
 <template>
   <main>
-    <div class="container mx-auto px-[16px]">
-      <event-cards v-if="!isLoading" :events="events" />
-      <cards-loader v-else />
-    </div>
+    <event-cards v-if="!isLoading" :events="events" />
+    <cards-loader v-else />
+
+    <the-contacts />
   </main>
 </template>
 
@@ -15,6 +15,7 @@ import api from "@/api";
 import delay from "@/utils/delay";
 import CardsLoader from "@/components/CardsLoader.vue";
 import EventCards from "@/components/EventCards.vue";
+import TheContacts from "@/components/TheContacts.vue";
 
 const isLoading: Ref<boolean> = ref(false);
 const events: Ref<IEvent[]> = ref([]);
@@ -24,7 +25,9 @@ const getEvents = async () => {
 
   await delay();
   await api
-    .get(`events?populate[0]=cover&filters[datetime][$gt]=${new Date().toISOString()}?sort[0]=datetime`)
+    .get(
+      `events?populate[0]=cover&populate[1]=event_category&filters[datetime][$gt]=${new Date().toISOString()}?sort[0]=datetime`,
+    )
     .then(res => res.json())
     .then(
       ({ data }) =>
