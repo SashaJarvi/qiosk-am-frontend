@@ -95,10 +95,6 @@
 import { computed, ref, reactive, watch } from "vue";
 import type { Ref } from "vue";
 import VueMarkdown from "vue-markdown-render";
-import IconX from "~icons/ph/x";
-import IconCalendar from "~icons/emojione/tear-off-calendar";
-import IconCard from "~icons/emojione/credit-card";
-import IconMap from "~icons/emojione/world-map";
 import type { IEvent } from "@/ts/interfaces/event";
 import api from "@/api";
 import delay from "@/utils/delay";
