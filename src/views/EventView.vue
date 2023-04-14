@@ -57,16 +57,16 @@
 
       <the-loader v-else-if="isLoading" />
 
-      <a href="/" class="read-more__btn" @click.prevent="wrapGoBack">
+      <router-link to="/" class="read-more__btn">
         <span>Вернуться назад</span>
         <img src="/images/arrows/arrow-left.svg" alt="arrow-left" />
-      </a>
+      </router-link>
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from "vue";
+import { computed, onUnmounted, reactive, ref } from "vue";
 import type { Ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
@@ -125,12 +125,11 @@ const getEventHandler = async () => {
   isLoading.value = false;
 };
 
-const wrapGoBack = () => {
-  clearEvent();
-  router.push("/");
-};
-
 getEventHandler();
+
+onUnmounted(() => {
+  clearEvent();
+});
 </script>
 
 <style lang="scss" scoped>
