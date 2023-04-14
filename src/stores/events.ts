@@ -6,6 +6,12 @@ import type { IEvent } from "@/ts/interfaces/event";
 import api from "@/api";
 import type { IEventCategory } from "@/ts/interfaces/event-category";
 
+interface IFormData {
+  name: string;
+  email: string;
+  message: string;
+}
+
 export const useEventsStore = defineStore("events", () => {
   const events: Ref<IEvent[] | null> = ref(null);
   const event: Ref<IEvent | null> = ref(null);
@@ -42,6 +48,19 @@ export const useEventsStore = defineStore("events", () => {
       .then(({ data }) => (event.value = data));
   };
 
+  const sendEmail = async (formData: IFormData) => {
+    return api
+      .post(`send-email`, formData)
+      .then(res => res.json())
+      .then(data => {
+        if (data.message === "ok") {
+          return { status: "success" };
+        } else {
+          return { status: "error" };
+        }
+      });
+  };
+
   const clearEvent = () => {
     event.value = null;
   };
@@ -52,6 +71,7 @@ export const useEventsStore = defineStore("events", () => {
     categorizedEvents,
     getEvents,
     getEvent,
+    sendEmail,
     clearEvent,
   };
 });
