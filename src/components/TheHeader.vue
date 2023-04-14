@@ -3,7 +3,11 @@
     <div class="container">
       <div class="header__info">
         <router-link to="/" class="header__logo">
-          <img src="/images/logo/logo-header.svg" alt="Logo header" />
+          <picture>
+            <source media="(max-width: 599px)" srcset="/images/logo/logo-header-m.svg" />
+            <source media="(max-width: 899px)" srcset="/images/logo/logo-header.svg" />
+            <img src="/images/logo/logo-header-big.svg" alt="Logo header" />
+          </picture>
         </router-link>
 
         <div class="header__links">
@@ -11,9 +15,13 @@
             <a href="tel:37477233503" class="header__contacts-number">+374 77 233 503</a>
             <a href="mailto:Info@qiosk.am" class="header__contacts-email">Info@qiosk.am</a>
           </div>
-
           <button class="write-btn">Написать нам!</button>
         </div>
+      </div>
+
+      <div class="header__contacts hide-element">
+        <a href="tel:37477233503" class="header__contacts-number">+374 77 233 503</a>
+        <a href="mailto:Info@qiosk.am" class="header__contacts-email">Info@qiosk.am</a>
       </div>
 
       <div class="form-fade none">
