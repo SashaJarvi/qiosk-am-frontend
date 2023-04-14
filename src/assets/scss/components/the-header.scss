@@ -11,7 +11,7 @@
 
 .header__logo {
   margin-top: -10px;
-  max-width: 250px;
+  max-width: 275px;
 }
 
 .header__links {
@@ -41,7 +41,42 @@
       color: #ffffffdd;
     }
   }
+
+  @media (max-width: 899px) {
+    display: none;
+  }
 }
+
+// .header__contacts.show-element {
+
+//    .header__contacts-number {
+//       font-size: 22px;
+
+//
+//       @media (max-width: 599px) {
+//          font-size: 17px;
+//       }
+//    }
+
+//    .header__contacts-email {
+//       font-weight: 300;
+//       font-size: 15px;
+
+//
+//       @media (max-width: 899px) {
+//          font-size: 22px;
+//       }
+
+//
+//       @media (max-width: 599px) {
+//          font-size: 17px;
+//       }
+//    }
+//
+//    @media (max-width: 599px) {
+//       margin-top: 10px;
+//    }
+// }
 
 .header__contacts-number {
   font-size: 22px;
@@ -50,4 +85,28 @@
 .header__contacts-email {
   font-weight: 300;
   font-size: 15px;
+}
+
+.header__contacts.hide-element {
+  display: none;
+
+  @media (max-width: 899px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 15px;
+
+    .header__contacts-email {
+      font-size: 22px;
+    }
+  }
+
+  @media (max-width: 599px) {
+    margin-top: 10px;
+
+    .header__contacts-email,
+    .header__contacts-number {
+      font-size: 17px;
+    }
+  }
 }

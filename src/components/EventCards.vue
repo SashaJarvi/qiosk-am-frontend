@@ -4,58 +4,64 @@
       <nav class="events__catalog">
         <h1 class="events__title">Каталог мероприятий</h1>
         <ul class="events__category">
-          <li><button class="btn">КИНО</button></li>
-          <li><button class="btn">ТЕАТР</button></li>
-          <li><button class="btn">КОНЦЕРТ</button></li>
-          <li><button class="btn">ЛЕКЦИЯ</button></li>
-          <li><button class="btn">СТЕНДАП</button></li>
-          <li><button class="btn">ПРОЧЕЕ</button></li>
+          <li>
+            <button class="btn" @click="clearCategory">Все</button>
+          </li>
+          <li v-for="category in eventsCategories" :key="category.id">
+            <button
+              class="btn"
+              :class="{ active: eventsCategory && category.id === eventsCategory.id }"
+              @click="selectEventCategory(category.id)"
+            >
+              {{ category.attributes.name.toUpperCase() }}
+            </button>
+          </li>
         </ul>
       </nav>
 
-      <div class="events__cards">
-        <event-card v-for="event in events" :key="event.id" :event="event" />
+      <div v-if="events.length" class="events__cards">
+        <event-card v-for="event in filteredEvents" :key="event.id" :event="event" />
       </div>
 
-      <button class="add-more">
-        <span>Больше мероприятий</span>
-        <img src="/images/arrows/arrow-down.svg" alt="arrow-down" />
-      </button>
+      <p v-else class="events__no-cards">Каталог пока пуст. Попробуйте выбрать другую категорию</p>
 
-      <button class="hide-cards none">
-        <span>Скрыть</span>
-        <img src="/images/arrows/arrow-down.svg" alt="arrow-down" />
-      </button>
+      <div class="btn-block">
+        <button
+          v-if="events.length > eventsLimit"
+          @click="showAllEvents = !showAllEvents"
+          :class="!showAllEvents ? 'add-more' : 'hide-cards'"
+        >
+          <span>{{ !showAllEvents ? "Больше мероприятий" : "Скрыть" }}</span>
+          <img src="/images/arrows/arrow-down.svg" alt="arrow-down" />
+        </button>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import type { Ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
-import bodyScrollLock from "@/utils/body-scroll-lock";
+import type { IEventCategory } from "@/ts/interfaces/event-category";
 import EventCard from "@/components/EventCard.vue";
-import EventModal from "@/components/EventModal.vue";
 
-defineProps<{
+const { eventsCategory } = storeToRefs(useEventsCategoriesStore());
+const { selectEventCategory, clearCategory } = useEventsCategoriesStore();
+
+const props = defineProps<{
   events: IEvent[];
+  eventsCategories: IEventCategory[];
 }>();
 
-// const isModalShown: Ref<boolean> = ref(false);
-const selectedEventId: Ref<number | null> = ref(null);
+const eventsLimit: Ref<number> = ref(3);
+const showAllEvents: Ref<boolean> = ref(false);
 
-// const showModal = (id: number): void => {
-//   isModalShown.value = true;
-//   bodyScrollLock.enable();
-//   selectedEventId.value = id;
-// };
-//
-// const closeModal = (): void => {
-//   isModalShown.value = false;
-//   bodyScrollLock.disable();
-//   selectedEventId.value = null;
-// };
+const filteredEvents = computed<IEvent[]>(() =>
+  !showAllEvents.value ? props.events.slice(0, eventsLimit.value) : props.events,
+);
 </script>
 
 <style lang="scss" scoped>

@@ -17,10 +17,6 @@
   &:active {
     background-color: #e5c910;
   }
-
-  //&:onclick {
-  //   background-color: #e5c910;
-  //}
 }
 
 .btn {
@@ -43,15 +39,14 @@
     color: #fff;
   }
 
-  &:active {
+  &:active, &.active {
     background-color: rgba(0, 0, 0, 0.8);
     color: #fff;
   }
 
-  //&:onclick {
-  //   background-color: #000;
-  //   color: #fff;
-  //}
+  @media (max-width: 599px) {
+    width: 104px;
+  }
 }
 
 .read-more {
@@ -76,10 +71,10 @@
     color: #fff;
   }
 
-  //&:onclick {
-  //   background-color: #000;
-  //   color: #fff;
-  //}
+  @media (max-width: 599px) {
+    padding: 0 20px;
+    max-width: 246px;
+  }
 }
 
 .btn-buy {
@@ -116,11 +111,12 @@
     color: #fff;
   }
 
-  //&:onclick {
-  //   background-color: #b71621;
-  //   border: 2px solid #b71621;
-  //   color: #fff;
-  //}
+  @media (max-width: 599px) {
+    column-gap: unset;
+    justify-content: space-between;
+    padding: 0 13px 0 23px;
+    max-width: 246px;
+  }
 }
 
 .add-more {

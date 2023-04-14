@@ -1,44 +1,57 @@
 <template>
-  <main>
-    <event-cards v-if="!isLoading" :events="events" />
-    <cards-loader v-else />
+  <main :class="{ loading: isLoading }">
+    <transition v-if="!isLoading" name="events-fade" mode="out-in" appear>
+      <event-cards
+        :events="(categorizedEvents as IEvent[])"
+        :events-categories="eventsCategories as IEventCategory[]"
+      />
+    </transition>
 
-    <the-contacts />
+    <the-loader v-else />
   </main>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
 import type { Ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useEventsStore } from "@/stores/events";
+import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
-import api from "@/api";
+import type { IEventCategory } from "@/ts/interfaces/event-category";
 import delay from "@/utils/delay";
-import CardsLoader from "@/components/CardsLoader.vue";
+import TheLoader from "@/components/TheLoader.vue";
 import EventCards from "@/components/EventCards.vue";
-import TheContacts from "@/components/TheContacts.vue";
+
+const { categorizedEvents } = storeToRefs(useEventsStore());
+const { eventsCategories } = storeToRefs(useEventsCategoriesStore());
+const { getEvents } = useEventsStore();
+const { getEventsCategories } = useEventsCategoriesStore();
 
 const isLoading: Ref<boolean> = ref(false);
-const events: Ref<IEvent[]> = ref([]);
 
-const getEvents = async () => {
+const getEventsHandler = async () => {
   isLoading.value = true;
 
   await delay();
-  await api
-    .get(
-      `events?populate[0]=cover&populate[1]=event_category&filters[datetime][$gt]=${new Date().toISOString()}?sort[0]=datetime`,
-    )
-    .then(res => res.json())
-    .then(
-      ({ data }) =>
-        (events.value = data.sort(
-          (a: IEvent, b: IEvent) =>
-            new Date(a.attributes.datetime).getTime() - new Date(b.attributes.datetime).getTime(),
-        )),
-    );
+  await getEventsCategories();
+  await getEvents();
 
   isLoading.value = false;
 };
 
-getEvents();
+getEventsHandler();
 </script>
+
+<style lang="scss" scoped>
+.events-fade-enter-active,
+.events-fade-leave-active {
+  transition: all 0.5s ease;
+}
+
+.events-fade-enter-from,
+.events-fade-leave-to {
+  transform: translateY(-30px);
+  opacity: 0;
+}
+</style>

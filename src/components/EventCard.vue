@@ -6,7 +6,7 @@
 
     <div class="card__info">
       <div class="card__descr">
-        <span class="card__type">Спектакль</span>
+        <span class="card__type">{{ event.attributes.event_category.data.attributes.name }}</span>
 
         <h2 class="card-title">{{ event.attributes.title }}</h2>
 
@@ -57,7 +57,7 @@
               <span>Стоимость</span>
             </h4>
 
-            <div class="card__organization-descr">{{ priceRange }}</div>
+            <div class="card__organization-descr card__organization-descr--short">{{ priceRange }}</div>
           </div>
         </div>
       </div>
@@ -75,10 +75,6 @@ const props = defineProps<{
   event: IEvent;
 }>();
 
-// const emit = defineEmits<{
-//   (e: "show-event-details", id: number): void;
-// }>();
-
 const { date, month, year, time, priceRange } = useEventComputed(
   props.event.attributes.datetime,
   props.event.attributes.min_price,
@@ -88,14 +84,6 @@ const { date, month, year, time, priceRange } = useEventComputed(
 const coverUrl = computed<string>(() => {
   return `${import.meta.env.VITE_BACKEND_URL}${props.event.attributes.cover.data.attributes.url}`;
 });
-
-// const goForTickets = (e: UIEvent) => {
-//   window.open(
-//     (e.target as HTMLLinkElement).href,
-//     (e.target as HTMLLinkElement).target,
-//     (e.target as HTMLLinkElement).rel,
-//   );
-// };
 </script>
 
 <style lang="scss" scoped>
