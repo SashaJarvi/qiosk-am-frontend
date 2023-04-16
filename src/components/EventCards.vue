@@ -32,7 +32,7 @@
           :class="!showAllEvents ? 'add-more' : 'hide-cards'"
         >
           <span>{{ !showAllEvents ? "Больше мероприятий" : "Скрыть" }}</span>
-          <img src="/images/arrows/arrow-down.svg" alt="arrow-down" />
+          <img width="30" height="30" src="/images/arrows/arrow-down.svg" alt="arrow-down" />
         </button>
       </div>
     </div>

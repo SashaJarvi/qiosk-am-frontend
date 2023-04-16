@@ -4,7 +4,7 @@
       <div class="contacts__row">
         <div class="contacts__social-wrapper">
           <router-link to="/" class="contacts__logo">
-            <img src="/images/logo/logo-contacts.svg" alt="logo contacts" />
+            <img width="135" height="118" src="/images/logo/logo-contacts.svg" alt="logo contacts" />
           </router-link>
 
           <div class="contacts__socials">
@@ -16,7 +16,7 @@
               rel="noopener"
               class="contacts__socials-item"
             >
-              <img :src="`/images/contacts/${icon}.svg`" :alt="icon" />
+              <img width="30" height="30" :src="`/images/contacts/${icon}.svg`" :alt="icon" />
             </a>
           </div>
         </div>
@@ -29,7 +29,7 @@
 
           <ul class="contacts__payments">
             <li v-for="system in paymentSystems" :key="system" class="contacts__payments-item">
-              <img :src="`/images/contacts/${system}.jpg`" :alt="`${system} card`" />
+              <img width="79" height="39" :src="`/images/contacts/${system}.jpg`" :alt="`${system} card`" />
             </li>
           </ul>
         </div>
@@ -42,7 +42,7 @@
           class="contacts__payments-items-out"
         >
           <div v-for="system in paymentSystemArr" :key="system" class="contacts__payments-item">
-            <img :src="`/images/contacts/${system}.jpg`" :alt="`${system} card`" />
+            <img width="79" height="39" :src="`/images/contacts/${system}.jpg`" :alt="`${system} card`" />
           </div>
         </div>
       </div>
