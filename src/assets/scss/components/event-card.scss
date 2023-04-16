@@ -70,10 +70,6 @@
   font-weight: 700;
   font-size: 16px;
 
-  &--short {
-    max-width: 132px;
-  }
-
   @media (max-width: 599px) {
     max-width: none;
     font-weight: 400;

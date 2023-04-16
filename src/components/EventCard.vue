@@ -39,7 +39,10 @@
               <span>Дата</span>
             </h4>
 
-            <div class="card__organization-descr">{{ date }} {{ month }}<br class="br" />в {{ time }}</div>
+            <div class="card__organization-descr">
+              {{ date }} {{ month }}<br class="br" />
+              {{ time }}
+            </div>
           </div>
 
           <div class="card__organization-item">

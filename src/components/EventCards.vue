@@ -13,7 +13,7 @@
               :class="{ active: eventsCategory && category.id === eventsCategory.id }"
               @click="selectEventCategory(category.id)"
             >
-              {{ category.attributes.name.toUpperCase() }}
+              {{ category.attributes.name }}
             </button>
           </li>
         </ul>

@@ -4,14 +4,7 @@
       <div class="form-fade" @click="emit('close')">
         <div class="form-popup" @click.stop="">
           <form class="form" @submit.prevent="submitHandler">
-            <h3 class="form__title">Заполните форму</h3>
-
-            <div class="form__descr">
-              <p>
-                Свяжемся с Вами в ближайшее для <br class="br" />
-                обсуждения деталей
-              </p>
-            </div>
+            <h3 class="form__title">Обратная связь</h3>
 
             <div class="form__item">
               <input v-model="formData.name" type="text" name="name" class="form__input" placeholder="Имя:" />
@@ -40,7 +33,7 @@
               <label class="error" v-if="v$.message.required.$invalid"> Введите сообщение </label>
             </div>
 
-            <button type="submit" class="form-popup__btn" :disabled="isSending">Отправить заявку</button>
+            <button type="submit" class="form-popup__btn" :disabled="isSending">Отправить сообщение</button>
 
             <button @click="emit('close')" class="form-popup__close">
               <img src="/images/contacts/close.svg" alt="close" />
