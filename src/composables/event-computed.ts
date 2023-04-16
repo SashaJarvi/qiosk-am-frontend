@@ -6,18 +6,18 @@ export function useEventComputed(dateString?: string, minPrice?: number, maxPric
   const date = computed<string>(() => padToTwoDigits(eventDate.value.getDate()));
   const month = computed<string>(() => {
     const monthObject = {
-      Jan: "янв.",
-      Feb: "фев.",
-      Mar: "мар.",
-      Apr: "апр.",
+      Jan: "января",
+      Feb: "февраля",
+      Mar: "марта",
+      Apr: "апреля",
       May: "мая",
-      Jun: "июн.",
-      Jul: "июл.",
-      Aug: "авг.",
-      Sep: "сен.",
-      Oct: "окт.",
-      Nov: "ноя.",
-      Dec: "дек.",
+      Jun: "июня",
+      Jul: "июля",
+      Aug: "августа",
+      Sep: "сентября",
+      Oct: "октября",
+      Nov: "ноября",
+      Dec: "декабря",
     };
     const dateStr = eventDate.value.toDateString();
     const dateStrArr = dateStr.split(" ");
@@ -33,7 +33,7 @@ export function useEventComputed(dateString?: string, minPrice?: number, maxPric
   });
 
   const priceRange = computed<string>(() => {
-    return maxPrice ? `${minPrice} AMD – ${maxPrice} AMD` : `${minPrice} AMD`;
+    return maxPrice ? `${minPrice} – ${maxPrice} AMD` : `${minPrice} AMD`;
   });
 
   return {

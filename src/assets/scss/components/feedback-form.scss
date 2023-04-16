@@ -12,6 +12,10 @@
 }
 
 .form-popup {
+  max-width: calc(402px + 30px);
+  max-height: 646px;
+  width: 100%;
+  margin: 0 15px;
   background-color: #fff;
 
   .contact-form__success,
@@ -30,8 +34,6 @@
   flex-direction: column;
   align-items: center;
   row-gap: 26px;
-  max-width: 402px;
-  max-height: 646px;
   padding: 42px 46px 52px;
 
   @media (max-width: 1299px) {
@@ -40,7 +42,6 @@
 
   @media (max-width: 899px) {
     row-gap: 15px;
-
     padding: 20px 20px 30px;
   }
 }
@@ -68,6 +69,7 @@
 
 .form__item {
   position: relative;
+  width: 100%;
 
   label.error {
     position: absolute;
@@ -78,16 +80,14 @@
 }
 
 .form__input {
-  width: 310px;
+  width: 100%;
   height: 55px;
+  padding: 0 26px 0 26px;
   background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.26);
   border-radius: 4px;
-  padding: 0 26px 0 26px;
-  max-width: 310px;
 
   @media (max-width: 1299px) {
-    width: 220px;
     height: 45px;
   }
 }
@@ -97,9 +97,9 @@
 }
 
 .from__message {
-  padding: 18px;
-  width: 310px;
+  width: 100%;
   height: 179px;
+  padding: 18px;
   background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.26);
   border-radius: 4px;
@@ -110,7 +110,7 @@
   }
 
   @media (max-width: 1299px) {
-    width: 220px;
+    //width: 220px;
     height: 120px;
   }
 }
@@ -118,14 +118,12 @@
 .form-popup__btn {
   padding: 0 70px;
   height: 68px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 20px;
   background-color: #000000;
   border-radius: 4px;
-
-  line-height: 70px;
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 24px;
-  color: #fff;
   transition: background-color 0.2s linear;
 
   &:hover,
@@ -144,9 +142,10 @@
 
   @media (max-width: 1299px) {
     padding: 0 20px;
-    width: 220px;
+    //width: 220px;
     height: 50px;
-    line-height: 50px;
+    //font-size: 16px;
+    //line-height: 18px;
   }
 }
 
