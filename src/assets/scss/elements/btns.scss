@@ -20,7 +20,7 @@
 }
 
 .btn {
-  width: 121px;
+  min-width: 121px;
   height: 40px;
   padding: 0 20px;
   color: #000;
@@ -45,7 +45,8 @@
   }
 
   @media (max-width: 599px) {
-    width: 104px;
+    min-width: 104px;
+    padding: 0 15px;
   }
 }
 

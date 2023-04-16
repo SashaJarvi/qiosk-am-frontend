@@ -15,7 +15,7 @@
             <a href="tel:37477233503" class="header__contacts-number">+374 77 233 503</a>
             <a href="mailto:Info@qiosk.am" class="header__contacts-email">Info@qiosk.am</a>
           </div>
-          <button class="write-btn" @click="showFeedbackForm = true">Написать нам!</button>
+          <button class="write-btn" @click="toggleFeedbackForm">Написать нам!</button>
         </div>
       </div>
 
@@ -26,16 +26,22 @@
     </div>
   </header>
 
-  <feedback-form v-if="showFeedbackForm" @close="showFeedbackForm = false" />
+  <feedback-form v-if="isFeedbackForm" @close="toggleFeedbackForm" />
 </template>
 
 <script setup lang="ts">
 import { defineAsyncComponent, ref } from "vue";
 import type { Ref } from "vue";
+import bodyScrollLock from "@/utils/body-scroll-lock";
 
 const FeedbackForm = defineAsyncComponent(() => import("@/components/FeedbackForm.vue"));
 
-const showFeedbackForm: Ref<boolean> = ref(false);
+const isFeedbackForm: Ref<boolean> = ref(false);
+
+const toggleFeedbackForm = () => {
+  isFeedbackForm.value = !isFeedbackForm.value;
+  isFeedbackForm.value ? bodyScrollLock.enable() : bodyScrollLock.disable();
+};
 </script>
 
 <style lang="scss" scoped>
