@@ -121,10 +121,7 @@
     transition: text-decoration-color 0.2s, color 0.2s linear;
 
     &:hover,
-    :focus {
-      text-decoration: underline;
-    }
-
+    &:focus,
     &:active {
       text-decoration: underline;
     }
