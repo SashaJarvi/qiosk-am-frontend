@@ -1,10 +1,15 @@
 <template>
   <main :class="{ loading: isLoading }">
-    <transition v-if="!isLoading" name="events-fade" mode="out-in" appear>
-      <event-cards
-        :events="(categorizedEvents as IEvent[])"
-        :events-categories="eventsCategories as IEventCategory[]"
-      />
+    <transition v-if="!isLoading && categorizedEvents" name="events-fade" mode="out-in" appear>
+      <div>
+        <event-cards
+          :events="(categorizedEvents as IEvent[])"
+          :events-categories="eventsCategories as IEventCategory[]"
+          @load-more="getEventsHandler"
+        />
+
+        <the-loader v-if="isGettingMoreEvents" />
+      </div>
     </transition>
 
     <the-loader v-else />
@@ -29,8 +34,17 @@ const { getEvents } = useEventsStore();
 const { getEventsCategories } = useEventsCategoriesStore();
 
 const isLoading: Ref<boolean> = ref(false);
+const isGettingMoreEvents: Ref<boolean> = ref(false);
 
 const getEventsHandler = async () => {
+  isGettingMoreEvents.value = true;
+
+  await getEvents(true);
+
+  isGettingMoreEvents.value = false;
+};
+
+const getDataHandler = async () => {
   isLoading.value = true;
 
   await delay();
@@ -40,7 +54,7 @@ const getEventsHandler = async () => {
   isLoading.value = false;
 };
 
-getEventsHandler();
+getDataHandler();
 </script>
 
 <style lang="scss" scoped>
