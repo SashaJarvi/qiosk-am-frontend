@@ -26,7 +26,11 @@
     </div>
   </header>
 
-  <feedback-form v-if="isFeedbackForm" @close="toggleFeedbackForm" />
+  <teleport to="#app">
+    <transition name="modal-wrapper-fade" mode="out-in" appear>
+      <feedback-form v-if="isFeedbackForm" @close="toggleFeedbackForm" />
+    </transition>
+  </teleport>
 </template>
 
 <script setup lang="ts">
@@ -47,4 +51,13 @@ const toggleFeedbackForm = () => {
 <style lang="scss" scoped>
 @import "@/assets/scss/elements/btns";
 @import "@/assets/scss/components/the-header";
+
+.modal-wrapper-fade-enter-active,
+.modal-wrapper-fade-leave-active {
+  transition: opacity 0.5s ease-in-out;
+}
+.modal-wrapper-fade-enter-from,
+.modal-wrapper-fade-leave-to {
+  opacity: 0;
+}
 </style>

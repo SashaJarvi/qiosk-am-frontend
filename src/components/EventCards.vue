@@ -25,17 +25,6 @@
       </div>
 
       <p v-else class="events__no-cards">Каталог пока пуст. Попробуйте выбрать другую категорию</p>
-
-      <!--      <div class="btn-block">-->
-      <!--        <button-->
-      <!--          v-if="events.length > eventsLimit"-->
-      <!--          @click="showAllEvents = !showAllEvents"-->
-      <!--          :class="!showAllEvents ? 'add-more' : 'hide-cards'"-->
-      <!--        >-->
-      <!--          <span>{{ !showAllEvents ? "Больше мероприятий" : "Скрыть" }}</span>-->
-      <!--          <img width="30" height="30" src="/images/arrows/arrow-down.svg" alt="arrow-down" />-->
-      <!--        </button>-->
-      <!--      </div>-->
     </div>
   </section>
 </template>

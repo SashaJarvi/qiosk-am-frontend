@@ -14,6 +14,7 @@ export interface IEvent {
     location: string;
     address: string;
     description: string;
+    short_description: string;
     tickets_link: string;
   };
 }

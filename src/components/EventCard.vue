@@ -10,16 +10,18 @@
 
         <h2 class="card-title">{{ event.attributes.title }}</h2>
 
-        <vue-markdown
-          :options="{
-            preset: 'default',
-            linkify: true,
-            breaks: true,
-            injected: true,
-          }"
-          :source="event.attributes.description"
-          class="card__text"
-        />
+        <p class="card__text">{{ event.attributes.short_description }}</p>
+
+        <!--        <vue-markdown-->
+        <!--          :options="{-->
+        <!--            preset: 'default',-->
+        <!--            linkify: true,-->
+        <!--            breaks: true,-->
+        <!--            injected: true,-->
+        <!--          }"-->
+        <!--          :source="event.attributes.description"-->
+        <!--          class="card__text"-->
+        <!--        />-->
 
         <div class="card__btn">
           <router-link class="read-more" :to="{ name: 'event-page', params: { eventId: event.id } }"
