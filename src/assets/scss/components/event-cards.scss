@@ -75,7 +75,10 @@
   align-items: center;
   column-gap: 19px;
 
-  /* Descktop small */
+  .btn {
+    text-align: center;
+  }
+
   @media (max-width: 1270px) {
     column-gap: 10px;
   }

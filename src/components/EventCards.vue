@@ -16,6 +16,9 @@
               {{ category.attributes.name }}
             </button>
           </li>
+          <li>
+            <router-link to="/archive" class="btn">Архив</router-link>
+          </li>
         </ul>
       </nav>
 
@@ -47,6 +50,7 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: "load-more"): void;
+  (e: "get-archived-events"): void;
 }>();
 
 const intersectCatch = () => {

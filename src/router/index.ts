@@ -15,6 +15,11 @@ const router = createRouter({
       component: () => import("@/views/EventView.vue"),
     },
     {
+      path: "/archive",
+      name: "events-archive",
+      component: () => import("@/views/ArchiveView.vue"),
+    },
+    {
       path: "/refund-policy",
       name: "refund-policy",
       component: () => import("@/views/RefundPolicyView.vue"),

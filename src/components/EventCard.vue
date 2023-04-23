@@ -12,23 +12,14 @@
 
         <p class="card__text">{{ event.attributes.short_description }}</p>
 
-        <!--        <vue-markdown-->
-        <!--          :options="{-->
-        <!--            preset: 'default',-->
-        <!--            linkify: true,-->
-        <!--            breaks: true,-->
-        <!--            injected: true,-->
-        <!--          }"-->
-        <!--          :source="event.attributes.description"-->
-        <!--          class="card__text"-->
-        <!--        />-->
-
         <div class="card__btn">
-          <router-link class="read-more" :to="{ name: 'event-page', params: { eventId: event.id } }"
+          <router-link
+            class="read-more"
+            :to="{ name: 'event-page', params: { eventId: event.id }, ...(archived && { query: { archived: true } }) }"
             >Подробнее о мероприятии
           </router-link>
 
-          <a class="btn-buy" :href="event.attributes.tickets_link" target="_blank">
+          <a v-if="!archived" class="btn-buy" :href="event.attributes.tickets_link" target="_blank">
             <span>Купить билет</span>
             <img alt="arrow-right" src="/images/arrows/arrow-right.svg" />
           </a>
@@ -71,8 +62,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue";
-import VueMarkdown from "vue-markdown-render";
+import { computed, inject } from "vue";
+// import VueMarkdown from "vue-markdown-render";
 import type { IEvent } from "@/ts/interfaces/event";
 import { useEventComputed } from "@/composables/event-computed";
 
@@ -89,6 +80,8 @@ const { date, month, year, time, priceRange } = useEventComputed(
 const coverUrl = computed<string>(() => {
   return `${import.meta.env.VITE_BACKEND_URL}${props.event.attributes.cover.data.attributes.url}`;
 });
+
+const archived = inject("archived", false);
 </script>
 
 <style lang="scss" scoped>

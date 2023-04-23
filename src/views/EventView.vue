@@ -12,7 +12,12 @@
               <span class="read-more__type card__type">{{ event.attributes.event_category.data.attributes.name }}</span>
               <h2 class="card-title">{{ event.attributes.title }}</h2>
 
-              <a :href="event.attributes.tickets_link" target="_blunk" class="read-more-card__btn btn-buy">
+              <a
+                v-if="!route.query.archived"
+                :href="event.attributes.tickets_link"
+                target="_blunk"
+                class="read-more-card__btn btn-buy"
+              >
                 <span>Купить билет</span>
                 <img src="/images/arrows/arrow-right.svg" alt="arrow-right" />
               </a>
@@ -57,7 +62,7 @@
 
       <the-loader v-else-if="isLoading" />
 
-      <router-link to="/" class="read-more__btn">
+      <router-link :to="route.query.archived ? '/archive' : '/'" class="read-more__btn">
         <span>Вернуться назад</span>
         <img src="/images/arrows/arrow-left.svg" alt="arrow-left" />
       </router-link>
