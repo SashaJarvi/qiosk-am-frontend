@@ -4,11 +4,19 @@
       <div>
         <event-cards
           :events="(categorizedEvents as IEvent[])"
+          :archived="true"
           :events-categories="eventsCategories as IEventCategory[]"
           @load-more="getEventsHandler"
         />
 
         <the-loader v-if="isGettingMoreEvents" />
+
+        <div class="container">
+          <router-link :to="route.params.archived ? '/archive' : '/'" class="back-btn">
+            <span>Вернуться назад</span>
+            <img src="/images/arrows/arrow-left.svg" alt="arrow-left" />
+          </router-link>
+        </div>
       </div>
     </transition>
 
@@ -17,9 +25,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, provide } from "vue";
 import type { Ref } from "vue";
 import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
 import { useEventsStore } from "@/stores/events";
 import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
@@ -27,6 +36,8 @@ import type { IEventCategory } from "@/ts/interfaces/event-category";
 import delay from "@/utils/delay";
 import TheLoader from "@/components/TheLoader.vue";
 import EventCards from "@/components/EventCards.vue";
+
+const route = useRoute();
 
 const { categorizedEvents } = storeToRefs(useEventsStore());
 const { eventsCategories } = storeToRefs(useEventsCategoriesStore());
@@ -39,7 +50,7 @@ const isGettingMoreEvents: Ref<boolean> = ref(false);
 const getEventsHandler = async () => {
   isGettingMoreEvents.value = true;
 
-  await getEvents({ hasInternalDelay: true });
+  await getEvents({ archived: true, hasInternalDelay: true });
 
   isGettingMoreEvents.value = false;
 };
@@ -50,15 +61,32 @@ const getDataHandler = async () => {
   await delay();
   await clearEvents();
   await getEventsCategories();
-  await getEvents();
+  await getEvents({ archived: true });
 
   isLoading.value = false;
 };
 
 getDataHandler();
+
+provide("archived", true);
 </script>
 
 <style lang="scss" scoped>
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 38px;
+  height: 50px;
+  margin-bottom: 46px;
+  padding: 0 28px 0 38px;
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 5px;
+  font-weight: 700;
+  font-size: 15px;
+  transition: 0.2s linear;
+}
+
 .events-fade-enter-active,
 .events-fade-leave-active {
   transition: all 0.5s ease;

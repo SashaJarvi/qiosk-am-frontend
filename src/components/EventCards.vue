@@ -16,6 +16,9 @@
               {{ category.attributes.name }}
             </button>
           </li>
+          <li v-if="route.name !== 'events-archive'">
+            <router-link to="/archive" class="btn">Архив</router-link>
+          </li>
         </ul>
       </nav>
 
@@ -25,28 +28,20 @@
       </div>
 
       <p v-else class="events__no-cards">Каталог пока пуст. Попробуйте выбрать другую категорию</p>
-
-      <!--      <div class="btn-block">-->
-      <!--        <button-->
-      <!--          v-if="events.length > eventsLimit"-->
-      <!--          @click="showAllEvents = !showAllEvents"-->
-      <!--          :class="!showAllEvents ? 'add-more' : 'hide-cards'"-->
-      <!--        >-->
-      <!--          <span>{{ !showAllEvents ? "Больше мероприятий" : "Скрыть" }}</span>-->
-      <!--          <img width="30" height="30" src="/images/arrows/arrow-down.svg" alt="arrow-down" />-->
-      <!--        </button>-->
-      <!--      </div>-->
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
 import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
 import type { IEventCategory } from "@/ts/interfaces/event-category";
 import EventCard from "@/components/EventCard.vue";
 import TheObserver from "@/components/TheObserver.vue";
+
+const route = useRoute();
 
 const { eventsCategory } = storeToRefs(useEventsCategoriesStore());
 const { selectEventCategory, clearCategory } = useEventsCategoriesStore();
@@ -58,6 +53,7 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: "load-more"): void;
+  (e: "get-archived-events"): void;
 }>();
 
 const intersectCatch = () => {

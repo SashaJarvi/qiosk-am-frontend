@@ -7,12 +7,6 @@ import type { IEventCategory } from "@/ts/interfaces/event-category";
 import api from "@/api";
 import delay from "@/utils/delay";
 
-interface IFormData {
-  name: string;
-  email: string;
-  message: string;
-}
-
 interface IMeta {
   pagination: {
     page: number | null;
@@ -20,6 +14,17 @@ interface IMeta {
     pageSize: number | null;
     total: number | null;
   };
+}
+
+interface IGetEventsParams {
+  archived?: boolean;
+  hasInternalDelay?: boolean;
+}
+
+interface IFormData {
+  name: string;
+  email: string;
+  message: string;
 }
 
 export const useEventsStore = defineStore("events", () => {
@@ -44,7 +49,15 @@ export const useEventsStore = defineStore("events", () => {
     );
   });
 
-  const getEvents = async (hasInternalDelay: boolean = false) => {
+  const getEvents = async (params?: IGetEventsParams) => {
+    let archived;
+    let hasInternalDelay;
+
+    if (params) {
+      archived = params.archived;
+      hasInternalDelay = params.hasInternalDelay;
+    }
+
     if (
       eventsMeta.pagination &&
       eventsMeta.pagination.page &&
@@ -56,10 +69,14 @@ export const useEventsStore = defineStore("events", () => {
 
     const url =
       eventsMeta.pagination && eventsMeta.pagination.page
-        ? `events?populate[0]=cover&populate[1]=event_category&filters[datetime][$gt]=${new Date().toISOString()}&sort[0]=datetime&pagination[page]=${
+        ? `events?populate[0]=cover&populate[1]=event_category&filters[datetime][${
+            archived ? "$lt" : "$gt"
+          }]=${new Date().toISOString()}&sort[0]=datetime&pagination[page]=${
             eventsMeta.pagination.page + 1
           }&pagination[pageSize]=${eventsMeta.pagination.pageCount}`
-        : `events?populate[0]=cover&populate[1]=event_category&filters[datetime][$gt]=${new Date().toISOString()}&sort[0]=datetime&pagination[page]=1&pagination[pageSize]=10`;
+        : `events?populate[0]=cover&populate[1]=event_category&filters[datetime][${
+            archived ? "$lt" : "$gt"
+          }]=${new Date().toISOString()}&sort[0]=datetime&pagination[page]=1&pagination[pageSize]=2`;
 
     if (hasInternalDelay) await delay();
 
@@ -96,6 +113,16 @@ export const useEventsStore = defineStore("events", () => {
       });
   };
 
+  const clearEvents = () => {
+    const metaPagination = eventsMeta.pagination;
+
+    events.value = null;
+    Object.keys(metaPagination).forEach(key => {
+      // @ts-ignore
+      metaPagination[key as keyof typeof metaPagination] = "";
+    });
+  };
+
   const clearEvent = () => {
     event.value = null;
   };
@@ -108,6 +135,7 @@ export const useEventsStore = defineStore("events", () => {
     getEvents,
     getEvent,
     sendEmail,
+    clearEvents,
     clearEvent,
   };
 });
