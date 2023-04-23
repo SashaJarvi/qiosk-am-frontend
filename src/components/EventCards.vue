@@ -16,7 +16,7 @@
               {{ category.attributes.name }}
             </button>
           </li>
-          <li>
+          <li v-if="route.name !== 'events-archive'">
             <router-link to="/archive" class="btn">Архив</router-link>
           </li>
         </ul>
@@ -34,11 +34,14 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
 import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
 import type { IEventCategory } from "@/ts/interfaces/event-category";
 import EventCard from "@/components/EventCard.vue";
 import TheObserver from "@/components/TheObserver.vue";
+
+const route = useRoute();
 
 const { eventsCategory } = storeToRefs(useEventsCategoriesStore());
 const { selectEventCategory, clearCategory } = useEventsCategoriesStore();
