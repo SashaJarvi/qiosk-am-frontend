@@ -16,10 +16,16 @@
               {{ category.attributes.name }}
             </button>
           </li>
-          <li v-if="route.name !== 'events-archive'">
+          <li v-if="!isArchivePage">
             <router-link to="/archive" class="btn">Архив</router-link>
           </li>
         </ul>
+      </nav>
+
+      <nav v-if="!isArchivePage" class="events__catalog">
+        <h1 class="events__title">Найти мероприятие</h1>
+
+        <input v-model="searchStr" class="events__search" type="text" />
       </nav>
 
       <div v-if="events.length" class="events__cards">
@@ -33,8 +39,10 @@
 </template>
 
 <script setup lang="ts">
+import { computed, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
+import { useEventsStore } from "@/stores/events";
 import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
 import type { IEventCategory } from "@/ts/interfaces/event-category";
@@ -43,6 +51,7 @@ import TheObserver from "@/components/TheObserver.vue";
 
 const route = useRoute();
 
+const { searchStr } = storeToRefs(useEventsStore());
 const { eventsCategory } = storeToRefs(useEventsCategoriesStore());
 const { selectEventCategory, clearCategory } = useEventsCategoriesStore();
 
@@ -53,12 +62,18 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: "load-more"): void;
-  (e: "get-archived-events"): void;
+  (e: "update-search-str", str: string): void;
 }>();
+
+const isArchivePage = computed<boolean>(() => route.name === "events-archive");
 
 const intersectCatch = () => {
   emit("load-more");
 };
+
+watch(searchStr, value => {
+  emit("update-search-str", value);
+});
 </script>
 
 <style lang="scss" scoped>
