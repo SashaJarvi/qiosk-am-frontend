@@ -33,7 +33,7 @@
         <the-observer @intersect="intersectCatch" />
       </div>
 
-      <p v-else class="events__no-cards">Каталог пока пуст. Попробуйте выбрать другую категорию</p>
+      <p v-else class="events__no-cards">Каталог пока пуст.</p>
     </div>
   </section>
 </template>
