@@ -90,12 +90,14 @@ export const useEventsStore = defineStore("events", () => {
       eventsMeta.pagination && eventsMeta.pagination.page
         ? `events?populate[0]=cover&populate[1]=event_category&filters[datetime][${
             archived ? "$lt" : "$gt"
-          }]=${new Date().toISOString()}&sort[0]=datetime&pagination[page]=${
+          }]=${new Date().toISOString()}&sort=datetime:${archived ? "desc" : "asc"}&pagination[page]=${
             eventsMeta.pagination.page + 1
           }&pagination[pageSize]=${eventsMeta.pagination.pageCount}`
         : `events?populate[0]=cover&populate[1]=event_category&filters[datetime][${
             archived ? "$lt" : "$gt"
-          }]=${new Date().toISOString()}&sort[0]=datetime&pagination[page]=1&pagination[pageSize]=10`;
+          }]=${new Date().toISOString()}&sort=datetime:${
+            archived ? "desc" : "asc"
+          }&pagination[page]=1&pagination[pageSize]=10`;
 
     if (hasInternalDelay) await delay();
 
