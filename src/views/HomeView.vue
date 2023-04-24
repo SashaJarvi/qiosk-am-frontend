@@ -6,6 +6,7 @@
           :events="(categorizedEvents as IEvent[])"
           :events-categories="eventsCategories as IEventCategory[]"
           @load-more="getEventsHandler"
+          @update-search-str="searchEventsHandler"
         />
 
         <the-loader v-if="isGettingMoreEvents" />
@@ -30,7 +31,7 @@ import EventCards from "@/components/EventCards.vue";
 
 const { categorizedEvents } = storeToRefs(useEventsStore());
 const { eventsCategories } = storeToRefs(useEventsCategoriesStore());
-const { getEvents, clearEvents } = useEventsStore();
+const { getEvents, searchEvents, clearEvents, clearSearchedEvents } = useEventsStore();
 const { getEventsCategories } = useEventsCategoriesStore();
 
 const isLoading: Ref<boolean> = ref(false);
@@ -42,6 +43,20 @@ const getEventsHandler = async () => {
   await getEvents({ hasInternalDelay: true });
 
   isGettingMoreEvents.value = false;
+};
+
+const searchEventsHandler = async (searchStr: string) => {
+  if (!searchStr) {
+    clearSearchedEvents();
+    return;
+  }
+
+  isLoading.value = true;
+
+  await delay();
+  await searchEvents(searchStr);
+
+  isLoading.value = false;
 };
 
 const getDataHandler = async () => {
