@@ -53,7 +53,9 @@
               linkify: true,
               breaks: true,
               injected: true,
+              html: true,
             }"
+            v-if="event.attributes.description"
             :source="event.attributes.description"
             class="read-more__descr"
           />
@@ -75,6 +77,8 @@ import { computed, onUnmounted, reactive, ref } from "vue";
 import type { Ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
+/* eslint-disable */
+// import VueMarkdownIt from "vue-markdown-it";
 import VueMarkdown from "vue-markdown-render";
 import type { IEvent } from "@/ts/interfaces/event";
 import { useEventsStore } from "@/stores/events";
