@@ -33,7 +33,8 @@
             </h4>
 
             <div class="card__organization-descr">
-              {{ date }} {{ month }}<br class="br" />
+              <strong>{{ date }} {{ month }}</strong
+              ><br class="br" />
               {{ time }}
             </div>
           </div>
