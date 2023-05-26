@@ -11,6 +11,7 @@
             <div class="read-more__card-descr">
               <span class="read-more__type card__type">{{ event.attributes.event_category.data.attributes.name }}</span>
               <h2 class="card-title">{{ event.attributes.title }}</h2>
+              <p v-if="event.attributes.subtitle" class="card-subtitle">{{ event.attributes.subtitle }}</p>
 
               <a
                 v-if="!route.query.archived"
@@ -148,6 +149,7 @@ onUnmounted(() => {
 @import "@/assets/scss/elements/btns";
 @import "@/assets/scss/elements/card";
 @import "@/assets/scss/elements/card-title";
+@import "@/assets/scss/elements/card-subtitle";
 @import "@/assets/scss/pages/event";
 
 .event-fade-enter-active,

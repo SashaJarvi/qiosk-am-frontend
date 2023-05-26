@@ -21,10 +21,10 @@
   }
 
   .card-title {
-    margin-bottom: 25px;
+    margin-bottom: 10px;
 
     @media (max-width: 599px) {
-      display: none;
+      margin-bottom: 8px;
     }
   }
 }

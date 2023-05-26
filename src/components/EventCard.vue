@@ -10,6 +10,8 @@
 
         <h2 class="card-title">{{ event.attributes.title }}</h2>
 
+        <p v-if="event.attributes.subtitle" class="card-subtitle">{{ event.attributes.subtitle }}</p>
+
         <p class="card__text">{{ event.attributes.short_description }}</p>
 
         <div class="card__btn">
@@ -95,5 +97,6 @@ const archived = inject("archived", false);
 @import "@/assets/scss/elements/btns";
 @import "@/assets/scss/elements/card";
 @import "@/assets/scss/elements/card-title";
+@import "@/assets/scss/elements/card-subtitle";
 @import "@/assets/scss/components/event-card";
 </style>
