@@ -1,14 +1,22 @@
 <template>
   <div class="card">
-    <div class="card__img">
-      <img :alt="event.attributes.title" :src="coverUrl" />
-    </div>
+    <router-link
+      :to="{ name: 'event-page', params: { eventId: event.id }, ...(archived && { query: { archived: true } }) }"
+    >
+      <div class="card__img">
+        <img :alt="event.attributes.title" :src="coverUrl" />
+      </div>
+    </router-link>
 
     <div class="card__info">
       <div class="card__descr">
         <span class="card__type">{{ event.attributes.event_category.data.attributes.name }}</span>
 
-        <h2 class="card-title">{{ event.attributes.title }}</h2>
+        <router-link
+          :to="{ name: 'event-page', params: { eventId: event.id }, ...(archived && { query: { archived: true } }) }"
+        >
+          <h2 class="card-title">{{ event.attributes.title }}</h2>
+        </router-link>
 
         <p v-if="event.attributes.subtitle" class="card-subtitle">{{ event.attributes.subtitle }}</p>
 
