@@ -24,7 +24,6 @@
         <div class="contacts__links-wrapper">
           <div class="contacts__links">
             <a href="tel:37477233503">+374 77 233 503</a>
-            <a href="mailto:Info@qiosk.am">Info@qiosk.am</a>
           </div>
 
           <ul class="contacts__payments">

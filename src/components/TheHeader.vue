@@ -13,7 +13,6 @@
         <div class="header__links">
           <div class="header__contacts">
             <a href="tel:37477233503" class="header__contacts-number">+374 77 233 503</a>
-            <a href="mailto:Info@qiosk.am" class="header__contacts-email">Info@qiosk.am</a>
           </div>
           <button class="write-btn" @click="toggleFeedbackForm">Написать нам!</button>
         </div>
@@ -21,7 +20,6 @@
 
       <div class="header__contacts hide-element">
         <a href="tel:37477233503" class="header__contacts-number">+374 77 233 503</a>
-        <a href="mailto:Info@qiosk.am" class="header__contacts-email">Info@qiosk.am</a>
       </div>
     </div>
   </header>
