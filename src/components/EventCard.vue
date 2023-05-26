@@ -12,7 +12,9 @@
 
         <p v-if="event.attributes.subtitle" class="card-subtitle">{{ event.attributes.subtitle }}</p>
 
-        <p class="card__text">{{ event.attributes.short_description }}</p>
+        <p class="card__text" :class="{ 'card__text--short': event.attributes.subtitle }">
+          {{ event.attributes.short_description }}
+        </p>
 
         <div class="card__btn">
           <router-link

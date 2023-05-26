@@ -28,10 +28,12 @@
         <input v-model="searchStr" class="events__search" type="text" />
       </nav>
 
-      <div v-if="events.length" class="events__cards">
+      <div v-if="events.length && (searchedEvents === null || searchedEvents.length)" class="events__cards">
         <event-card v-for="event in events" :key="event.id" :event="event" />
         <the-observer @intersect="intersectCatch" />
       </div>
+
+      <p v-else-if="searchedEvents && !searchedEvents.length" class="events__no-cards">Мероприятия не найдены</p>
 
       <p v-else class="events__no-cards">Каталог пока пуст.</p>
     </div>
@@ -51,7 +53,7 @@ import TheObserver from "@/components/TheObserver.vue";
 
 const route = useRoute();
 
-const { searchStr } = storeToRefs(useEventsStore());
+const { searchStr, searchedEvents } = storeToRefs(useEventsStore());
 const { eventsCategory } = storeToRefs(useEventsCategoriesStore());
 const { selectEventCategory, clearCategory } = useEventsCategoriesStore();
 
