@@ -51,6 +51,7 @@ import { RouterLink } from "vue-router";
     font-size: 18px;
 
     .read-more {
+      height: 50px;
       margin-bottom: 30px;
     }
   }

@@ -113,7 +113,7 @@ const eventInfo = reactive<IEventInfo>({
 });
 
 const coverUrl = computed<string>(() => {
-  return `${import.meta.env.VITE_BACKEND_URL}${(event.value as IEvent).attributes.cover.data.attributes.url}`;
+  return `${(event.value as IEvent).attributes.cover.data.attributes.url}`;
 });
 
 const getEventHandler = async () => {
