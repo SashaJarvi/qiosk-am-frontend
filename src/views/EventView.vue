@@ -63,6 +63,15 @@
             :source="event.attributes.description"
             class="read-more__descr"
           />
+
+          <div class="read-more__yt-wrapper">
+            <iframe
+              class="read-more__yt"
+              v-if="event.attributes.youtube_video"
+              :src="getYtEmbedLink(event.attributes.youtube_video)"
+              allowfullscreen
+            ></iframe>
+          </div>
         </div>
       </transition>
 
@@ -89,6 +98,7 @@ import { useEventsStore } from "@/stores/events";
 import { useEventComputed } from "@/composables/event-computed";
 import delay from "@/utils/delay";
 import TheLoader from "@/components/TheLoader.vue";
+import getYtEmbedLink from "@/utils/get-yt-embed-link";
 
 interface IEventInfo {
   date: string | undefined;

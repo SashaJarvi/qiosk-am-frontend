@@ -17,5 +17,6 @@ export interface IEvent {
     description: string;
     short_description: string;
     tickets_link: string;
+    youtube_video?: string;
   };
 }

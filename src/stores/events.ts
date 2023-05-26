@@ -128,6 +128,11 @@ export const useEventsStore = defineStore("events", () => {
       .get(url)
       .then(res => res.json())
       .then(({ data, meta }) => {
+        if (!data.length) {
+          searchedEvents.value = [];
+          return;
+        }
+
         searchedEventsMeta.pagination.page = meta.pagination.page;
         searchedEventsMeta.pagination.pageCount = meta.pagination.pageCount;
         searchedEventsMeta.pagination.pageSize = meta.pagination.pageSize;
