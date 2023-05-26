@@ -4,6 +4,7 @@ export interface IEvent {
   id: number;
   attributes: {
     title: string;
+    subtitle?: string;
     cover: any;
     event_category: {
       data: IEventCategory;

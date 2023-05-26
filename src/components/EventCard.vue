@@ -10,7 +10,9 @@
 
         <h2 class="card-title">{{ event.attributes.title }}</h2>
 
-        <p class="card__text">{{ shortDescription }}</p>
+        <p v-if="event.attributes.subtitle" class="card-subtitle">{{ event.attributes.subtitle }}</p>
+
+        <p class="card__text">{{ event.attributes.short_description }}</p>
 
         <div class="card__btn">
           <router-link
@@ -71,7 +73,6 @@
 
 <script lang="ts" setup>
 import { computed, inject } from "vue";
-import markdownToTxt from "markdown-to-txt";
 import type { IEvent } from "@/ts/interfaces/event";
 import { useEventComputed } from "@/composables/event-computed";
 
@@ -86,11 +87,7 @@ const { date, month, year, time, priceRange } = useEventComputed(
 );
 
 const coverUrl = computed<string>(() => {
-  return `${import.meta.env.VITE_BACKEND_URL}${props.event.attributes.cover.data.attributes.url}`;
-});
-
-const shortDescription = computed<string>(() => {
-  return markdownToTxt(props.event.attributes.description);
+  return `${props.event.attributes.cover.data.attributes.url}`;
 });
 
 const archived = inject("archived", false);
@@ -100,5 +97,6 @@ const archived = inject("archived", false);
 @import "@/assets/scss/elements/btns";
 @import "@/assets/scss/elements/card";
 @import "@/assets/scss/elements/card-title";
+@import "@/assets/scss/elements/card-subtitle";
 @import "@/assets/scss/components/event-card";
 </style>
