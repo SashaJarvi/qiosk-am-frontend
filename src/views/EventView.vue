@@ -64,10 +64,9 @@
             class="read-more__descr"
           />
 
-          <div class="read-more__yt-wrapper">
+          <div v-if="event.attributes.youtube_video" class="read-more__yt-wrapper">
             <iframe
               class="read-more__yt"
-              v-if="event.attributes.youtube_video"
               :src="getYtEmbedLink(event.attributes.youtube_video)"
               allowfullscreen
             ></iframe>

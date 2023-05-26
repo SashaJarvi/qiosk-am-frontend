@@ -22,11 +22,11 @@
         </ul>
       </nav>
 
-      <nav v-if="!isArchivePage" class="events__catalog">
-        <h1 class="events__title">Найти мероприятие</h1>
+      <!--      <nav v-if="!isArchivePage" class="events__catalog">-->
+      <!--        <h1 class="events__title">Найти мероприятие</h1>-->
 
-        <input v-model="searchStr" class="events__search" type="text" />
-      </nav>
+      <!--        <input v-model="searchStr" class="events__search" type="text" />-->
+      <!--      </nav>-->
 
       <div v-if="events.length && (searchedEvents === null || searchedEvents.length)" class="events__cards">
         <event-card v-for="event in events" :key="event.id" :event="event" />
