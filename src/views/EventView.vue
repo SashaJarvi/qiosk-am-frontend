@@ -34,7 +34,11 @@
                   <div class="read-more__item-img">
                     <img src="/images/events-icons/marker.svg" alt="marker" />
                   </div>
-                  <span>{{ event.attributes.location }}</span>
+                  <p>
+                    <span>{{ event.attributes.location_name }}</span
+                    ><br />
+                    <span>{{ event.attributes.location_address }}</span>
+                  </p>
                 </li>
 
                 <li class="read-more__item">
@@ -52,7 +56,6 @@
               preset: 'default',
               linkify: true,
               breaks: true,
-              injected: true,
               html: true,
             }"
             v-if="event.attributes.description"
