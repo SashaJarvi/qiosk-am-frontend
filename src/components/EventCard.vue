@@ -10,7 +10,7 @@
 
         <h2 class="card-title">{{ event.attributes.title }}</h2>
 
-        <p class="card__text">{{ event.attributes.short_description }}</p>
+        <p class="card__text">{{ shortDescription }}</p>
 
         <div class="card__btn">
           <router-link
@@ -45,7 +45,12 @@
               <span>Место проведения</span>
             </h4>
 
-            <div class="card__organization-descr">{{ event.attributes.location }}</div>
+            <div class="card__organization-descr">
+              <strong>{{ event.attributes.location_name }}</strong
+              ><br />
+              {{ event.attributes.location_address }}
+            </div>
+            <div class="card__organization-descr"></div>
           </div>
 
           <div class="card__organization-item">
@@ -54,7 +59,9 @@
               <span>Стоимость</span>
             </h4>
 
-            <div class="card__organization-descr card__organization-descr--short">{{ priceRange }}</div>
+            <div class="card__organization-descr card__organization-descr--short">
+              <strong>{{ priceRange }}</strong>
+            </div>
           </div>
         </div>
       </div>
@@ -64,7 +71,7 @@
 
 <script lang="ts" setup>
 import { computed, inject } from "vue";
-// import VueMarkdown from "vue-markdown-render";
+import markdownToTxt from "markdown-to-txt";
 import type { IEvent } from "@/ts/interfaces/event";
 import { useEventComputed } from "@/composables/event-computed";
 
@@ -80,6 +87,10 @@ const { date, month, year, time, priceRange } = useEventComputed(
 
 const coverUrl = computed<string>(() => {
   return `${import.meta.env.VITE_BACKEND_URL}${props.event.attributes.cover.data.attributes.url}`;
+});
+
+const shortDescription = computed<string>(() => {
+  return markdownToTxt(props.event.attributes.description);
 });
 
 const archived = inject("archived", false);

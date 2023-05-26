@@ -11,8 +11,8 @@ export interface IEvent {
     datetime: string;
     min_price: number;
     max_price: number | undefined;
-    location: string;
-    address: string;
+    location_name: string;
+    location_address: string;
     description: string;
     short_description: string;
     tickets_link: string;
