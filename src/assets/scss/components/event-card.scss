@@ -2,7 +2,7 @@
   position: absolute;
   bottom: 0;
   left: 50%;
-  transform: translate(-50%, 77%);
+  transform: translate(-50%, 75%);
 
   display: flex;
   justify-content: space-between;
@@ -20,18 +20,15 @@
     transform: translate(-50%, 80%);
   }
 
-
   @media (max-width: 599px) {
-    bottom: 0;
-    padding: 23px 14px;
-    width: 100%;
-    border-radius: 0px;
-    left: 0;
-    transform: translateX(0);
-    transform: translateY(100%);
-
     flex-direction: column;
     row-gap: 15px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    padding: 23px 14px;
+    border-radius: 0;
+    transform: translateX(0) translateY(100%);
   }
 }
 
@@ -66,7 +63,7 @@
 }
 
 .card__organization-descr {
-  max-width: 172px;
+  max-width: 182px;
   font-size: 16px;
 
   @media (max-width: 599px) {
