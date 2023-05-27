@@ -62,6 +62,7 @@
             v-if="event.attributes.description"
             :source="event.attributes.description"
             class="read-more__descr"
+            ref="eventDescription"
           />
 
           <div v-if="event.attributes.youtube_video" class="read-more__yt-wrapper">
@@ -85,12 +86,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onUnmounted, reactive, ref } from "vue";
+import { computed, onMounted, onUnmounted, reactive, ref, watch } from "vue";
 import type { Ref } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
-/* eslint-disable */
-// import VueMarkdownIt from "vue-markdown-it";
 import VueMarkdown from "vue-markdown-render";
 import type { IEvent } from "@/ts/interfaces/event";
 import { useEventsStore } from "@/stores/events";
@@ -107,7 +106,6 @@ interface IEventInfo {
   priceRange: string | undefined;
 }
 
-const router = useRouter();
 const route = useRoute();
 
 const { event } = storeToRefs(useEventsStore());
@@ -121,6 +119,7 @@ const eventInfo = reactive<IEventInfo>({
   time: "",
   priceRange: "",
 });
+const eventDescription = ref<HTMLDivElement | null>(null);
 
 const coverUrl = computed<string>(() => {
   return `${(event.value as IEvent).attributes.cover.data.attributes.url}`;
@@ -148,6 +147,19 @@ const getEventHandler = async () => {
 };
 
 getEventHandler();
+
+watch(eventDescription, value => {
+  if (!value) return;
+
+  // @ts-ignore
+  const descriptionLinks = value?.$el.querySelectorAll("a");
+
+  [...descriptionLinks].forEach(function (link) {
+    link.style.color = "#0000ff";
+    link.style.textDecoration = "underline";
+    link.setAttribute("target", "_blank");
+  });
+});
 
 onUnmounted(() => {
   clearEvent();
