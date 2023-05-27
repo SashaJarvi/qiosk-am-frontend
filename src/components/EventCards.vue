@@ -23,24 +23,24 @@
             </li>
           </ul>
 
-          <div v-if="!isArchivePage" class="events__search-wrapper">
-            <svg
-              class="events__search-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#000000"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input v-model="searchStr" class="events__search" type="text" />
-          </div>
+          <!--          <div v-if="!isArchivePage" class="events__search-wrapper">-->
+          <!--            <svg-->
+          <!--              class="events__search-icon"-->
+          <!--              xmlns="http://www.w3.org/2000/svg"-->
+          <!--              width="24"-->
+          <!--              height="24"-->
+          <!--              viewBox="0 0 24 24"-->
+          <!--              fill="none"-->
+          <!--              stroke="#000000"-->
+          <!--              stroke-width="2"-->
+          <!--              stroke-linecap="round"-->
+          <!--              stroke-linejoin="round"-->
+          <!--            >-->
+          <!--              <circle cx="11" cy="11" r="8"></circle>-->
+          <!--              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>-->
+          <!--            </svg>-->
+          <!--            <input v-model="searchStr" class="events__search" type="text" />-->
+          <!--          </div>-->
         </div>
       </nav>
 
@@ -72,7 +72,7 @@ import TheObserver from "@/components/TheObserver.vue";
 
 const route = useRoute();
 
-const { searchStr, searchedEvents } = storeToRefs(useEventsStore());
+const { searchStr, searchedEvents, currentDate } = storeToRefs(useEventsStore());
 const { eventsCategory } = storeToRefs(useEventsCategoriesStore());
 const { selectEventCategory, clearCategory } = useEventsCategoriesStore();
 
