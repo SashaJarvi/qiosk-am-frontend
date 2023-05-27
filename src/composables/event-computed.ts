@@ -1,5 +1,5 @@
-import padToTwoDigits from "@/utils/pad-to-two-digits";
 import { computed } from "vue";
+import padToTwoDigits from "@/utils/pad-to-two-digits";
 
 export function useEventComputed(dateString?: string, minPrice?: number, maxPrice?: number) {
   const eventDate = computed<Date>(() => new Date(dateString as string));

@@ -30,7 +30,7 @@ interface IFormData {
 
 export const useEventsStore = defineStore("events", () => {
   const events: Ref<IEvent[] | null> = ref(null);
-  const searchStr = useDebouncedRef("", 1500, false);
+  const searchStr = useDebouncedRef("", 1000, true);
   const searchedEvents: Ref<IEvent[] | null> = ref(null);
   const event: Ref<IEvent | null> = ref(null);
   const eventsMeta = reactive<IMeta>({
