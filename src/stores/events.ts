@@ -1,4 +1,4 @@
-import { computed, reactive, ref } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import type { Ref } from "vue";
 import { defineStore, storeToRefs } from "pinia";
 import { useEventsCategoriesStore } from "@/stores/event-categories";
@@ -7,6 +7,8 @@ import type { IEventCategory } from "@/ts/interfaces/event-category";
 import api from "@/api";
 import delay from "@/utils/delay";
 import useDebouncedRef from "@/composables/debounced-ref";
+import removeDuplicateObjects from "@/utils/remove-duplicate-objects";
+import createDatetimeString from "@/utils/create-datetime-string";
 
 interface IMeta {
   pagination: {
@@ -30,7 +32,7 @@ interface IFormData {
 
 export const useEventsStore = defineStore("events", () => {
   const events: Ref<IEvent[] | null> = ref(null);
-  const searchStr = useDebouncedRef("", 1000, true);
+  const searchStr = useDebouncedRef("", 1000, false);
   const searchedEvents: Ref<IEvent[] | null> = ref(null);
   const event: Ref<IEvent | null> = ref(null);
   const eventsMeta = reactive<IMeta>({
@@ -90,12 +92,12 @@ export const useEventsStore = defineStore("events", () => {
       eventsMeta.pagination && eventsMeta.pagination.page
         ? `events?populate[0]=cover&populate[1]=event_category&filters[datetime][${
             archived ? "$lt" : "$gt"
-          }]=${new Date().toISOString()}&sort=datetime:${archived ? "desc" : "asc"}&pagination[page]=${
-            eventsMeta.pagination.page + 1
-          }&pagination[pageSize]=${eventsMeta.pagination.pageCount}`
+          }]=${createDatetimeString(new Date().toISOString(), "Asia/Yerevan")}&sort=datetime:${
+            archived ? "desc" : "asc"
+          }&pagination[page]=${eventsMeta.pagination.page + 1}&pagination[pageSize]=${eventsMeta.pagination.pageCount}`
         : `events?populate[0]=cover&populate[1]=event_category&filters[datetime][${
             archived ? "$lt" : "$gt"
-          }]=${new Date().toISOString()}&sort=datetime:${
+          }]=${createDatetimeString(new Date().toISOString(), "Asia/Yerevan")}&sort=datetime:${
             archived ? "desc" : "asc"
           }&pagination[page]=1&pagination[pageSize]=10`;
 
@@ -117,10 +119,16 @@ export const useEventsStore = defineStore("events", () => {
   const searchEvents = async (searchStr: string, hasInternalDelay?: boolean) => {
     const url =
       searchedEventsMeta.pagination && searchedEventsMeta.pagination.page
-        ? `events?populate[0]=cover&populate[1]=event_category&filters[$or][0][title][$containsi]=${searchStr}&filters[$or][1][description][$containsi]=${searchStr}&filters[$or][2][short_description][$containsi]=${searchStr}&filters[datetime][$gt]=${new Date().toISOString()}&sort[0]=datetime&pagination[page]=${
-            searchedEventsMeta.pagination.page + 1
-          }&pagination[pageSize]=${searchedEventsMeta.pagination.pageCount}`
-        : `events?populate[0]=cover&populate[1]=event_category&filters[$or][0][title][$containsi]=${searchStr}&filters[$or][1][description][$containsi]=${searchStr}&filters[$or][2][short_description][$containsi]=${searchStr}&filters[datetime][$gt]=${new Date().toISOString()}&sort[0]=datetime&pagination[page]=1&pagination[pageSize]=10`;
+        ? `events?populate[0]=cover&populate[1]=event_category&filters[$or][0][title][$containsi]=${searchStr}&filters[$or][1][description][$containsi]=${searchStr}&filters[$or][2][short_description][$containsi]=${searchStr}&filters[datetime][$gt]=${createDatetimeString(
+            new Date().toISOString(),
+            "Asia/Yerevan",
+          )}&sort[0]=datetime&pagination[page]=${searchedEventsMeta.pagination.page + 1}&pagination[pageSize]=${
+            searchedEventsMeta.pagination.pageCount
+          }`
+        : `events?populate[0]=cover&populate[1]=event_category&filters[$or][0][title][$containsi]=${searchStr}&filters[$or][1][description][$containsi]=${searchStr}&filters[$or][2][short_description][$containsi]=${searchStr}&filters[datetime][$gt]=${createDatetimeString(
+            new Date().toISOString(),
+            "Asia/Yerevan",
+          )}&sort[0]=datetime&pagination[page]=1&pagination[pageSize]=10`;
 
     if (hasInternalDelay) await delay();
 
@@ -130,6 +138,7 @@ export const useEventsStore = defineStore("events", () => {
       .then(({ data, meta }) => {
         if (!data.length) {
           searchedEvents.value = [];
+          resetPagination();
           return;
         }
 
@@ -138,7 +147,9 @@ export const useEventsStore = defineStore("events", () => {
         searchedEventsMeta.pagination.pageSize = meta.pagination.pageSize;
         searchedEventsMeta.pagination.total = meta.pagination.total;
 
-        searchedEvents.value = searchedEvents.value?.length ? [...searchedEvents.value, ...data] : data;
+        searchedEvents.value = searchedEvents.value?.length
+          ? removeDuplicateObjects([...searchedEvents.value, ...data], "id")
+          : data;
       });
   };
 
@@ -183,6 +194,17 @@ export const useEventsStore = defineStore("events", () => {
   const clearEvent = () => {
     event.value = null;
   };
+
+  const resetPagination = () => {
+    searchedEventsMeta.pagination.page = null;
+    searchedEventsMeta.pagination.pageCount = null;
+    searchedEventsMeta.pagination.pageSize = null;
+    searchedEventsMeta.pagination.total = null;
+  };
+
+  watch(searchStr, () => {
+    resetPagination();
+  });
 
   return {
     events,

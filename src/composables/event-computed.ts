@@ -1,35 +1,40 @@
 import { computed } from "vue";
-import padToTwoDigits from "@/utils/pad-to-two-digits";
+import createDatetimeString from "@/utils/create-datetime-string";
+import separateDateTime from "@/utils/separate-date-time";
 
 export function useEventComputed(dateString?: string, minPrice?: number, maxPrice?: number) {
-  const eventDate = computed<Date>(() => new Date(dateString as string));
-  const date = computed<string>(() => padToTwoDigits(eventDate.value.getDate()));
+  const yerevanDatetime = createDatetimeString(dateString as string, "Asia/Yerevan");
+  const datetimeObject = separateDateTime(yerevanDatetime);
+  // const eventDate = computed<Date>(() => new Date(dateString as string));
+  const date = computed<string>(() => datetimeObject.dateStr.split("-")[2]);
   const month = computed<string>(() => {
     const monthObject = {
-      Jan: "января",
-      Feb: "февраля",
-      Mar: "марта",
-      Apr: "апреля",
-      May: "мая",
-      Jun: "июня",
-      Jul: "июля",
-      Aug: "августа",
-      Sep: "сентября",
-      Oct: "октября",
-      Nov: "ноября",
-      Dec: "декабря",
+      "01": "января",
+      "02": "февраля",
+      "03": "марта",
+      "04": "апреля",
+      "05": "мая",
+      "06": "июня",
+      "07": "июля",
+      "08": "августа",
+      "09": "сентября",
+      "10": "октября",
+      "11": "ноября",
+      "12": "декабря",
     };
-    const dateStr = eventDate.value.toDateString();
-    const dateStrArr = dateStr.split(" ");
-    const monthStr: string = dateStrArr[1];
+
+    console.log(new Date(yerevanDatetime.slice(0, -1)));
+    console.log(createDatetimeString(new Date().toISOString(), "Asia/Yerevan"));
+
+    const monthStr = datetimeObject.dateStr.split("-")[1];
 
     return monthObject[monthStr as keyof typeof monthObject];
   });
 
-  const year = computed<string>(() => `${eventDate.value.getFullYear()}`);
+  const year = computed<string>(() => datetimeObject.dateStr.split("-")[0]);
 
   const time = computed<string>(() => {
-    return `${padToTwoDigits(eventDate.value.getHours())}:${padToTwoDigits(eventDate.value.getMinutes())}`;
+    return datetimeObject.timeStr;
   });
 
   const priceRange = computed<string>(() => {
@@ -37,7 +42,8 @@ export function useEventComputed(dateString?: string, minPrice?: number, maxPric
   });
 
   return {
-    eventDate,
+    yerevanDatetime,
+    datetimeObject,
     date,
     month,
     year,

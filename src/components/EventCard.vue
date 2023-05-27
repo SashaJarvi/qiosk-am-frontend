@@ -89,7 +89,7 @@ const props = defineProps<{
   event: IEvent;
 }>();
 
-const { date, month, year, time, priceRange } = useEventComputed(
+const { yerevanDatetime, datetimeObject, date, month, year, time, priceRange } = useEventComputed(
   props.event.attributes.datetime,
   props.event.attributes.min_price,
   props.event.attributes.max_price,

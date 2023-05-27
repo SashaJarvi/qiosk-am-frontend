@@ -31,12 +31,13 @@
   margin-bottom: 53px;
 
   @media (max-width: 1270px) {
-    flex-wrap: wrap;
+    //flex-wrap: wrap;
     gap: 20px;
   }
 
   @media (max-width: 1199px) {
-    column-gap: 120px;
+    flex-wrap: wrap;
+    //column-gap: 120px;
   }
 
   @media (max-width: 899px) {
