@@ -62,7 +62,6 @@
               ><br />
               {{ event.attributes.location_address }}
             </div>
-            <div class="card__organization-descr"></div>
           </div>
 
           <div class="card__organization-item">
