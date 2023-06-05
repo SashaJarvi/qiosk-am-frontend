@@ -59,7 +59,7 @@ const getEventsHandler = async () => {
 const getDataHandler = async () => {
   isLoading.value = true;
 
-  await delay(500);
+  // await delay(500);
   await clearEvents();
   await getEventsCategories();
   await getEvents({ archived: true });

@@ -99,9 +99,9 @@ export const useEventsStore = defineStore("events", () => {
             archived ? "$lt" : "$gt"
           }]=${createDatetimeString(new Date().toISOString(), "Asia/Yerevan")}&sort=datetime:${
             archived ? "desc" : "asc"
-          }&pagination[page]=1&pagination[pageSize]=10`;
+          }&pagination[page]=1&pagination[pageSize]=5`;
 
-    if (hasInternalDelay) await delay(500);
+    if (hasInternalDelay) await delay(300);
 
     return api
       .get(url)
