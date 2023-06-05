@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide } from "vue";
+import { ref, provide, defineAsyncComponent } from "vue";
 import type { Ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
@@ -35,7 +35,8 @@ import type { IEvent } from "@/ts/interfaces/event";
 import type { IEventCategory } from "@/ts/interfaces/event-category";
 import delay from "@/utils/delay";
 import TheLoader from "@/components/TheLoader.vue";
-import EventCards from "@/components/EventCards.vue";
+
+const EventCards = defineAsyncComponent(() => import("@/components/EventCards.vue"));
 
 const route = useRoute();
 
@@ -58,7 +59,7 @@ const getEventsHandler = async () => {
 const getDataHandler = async () => {
   isLoading.value = true;
 
-  await delay();
+  await delay(500);
   await clearEvents();
   await getEventsCategories();
   await getEvents({ archived: true });

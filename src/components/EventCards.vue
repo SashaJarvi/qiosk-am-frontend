@@ -60,19 +60,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from "vue";
+import { computed, defineAsyncComponent, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { useEventsStore } from "@/stores/events";
 import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
 import type { IEventCategory } from "@/ts/interfaces/event-category";
-import EventCard from "@/components/EventCard.vue";
-import TheObserver from "@/components/TheObserver.vue";
+
+const EventCard = defineAsyncComponent(() => import("@/components/EventCard.vue"));
+const TheObserver = defineAsyncComponent(() => import("@/components/TheObserver.vue"));
 
 const route = useRoute();
 
-const { searchStr, searchedEvents, currentDate } = storeToRefs(useEventsStore());
+const { searchStr, searchedEvents } = storeToRefs(useEventsStore());
 const { eventsCategory } = storeToRefs(useEventsCategoriesStore());
 const { selectEventCategory, clearCategory } = useEventsCategoriesStore();
 

@@ -53,6 +53,7 @@
 import { computed, ref } from "vue";
 import type { Ref } from "vue";
 import chunkArray from "@/utils/chunk-array";
+
 interface ISocialLink {
   href: string;
   icon: string;

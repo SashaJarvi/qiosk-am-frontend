@@ -5,7 +5,6 @@ import separateDateTime from "@/utils/separate-date-time";
 export function useEventComputed(dateString?: string, minPrice?: number, maxPrice?: number) {
   const yerevanDatetime = createDatetimeString(dateString as string, "Asia/Yerevan");
   const datetimeObject = separateDateTime(yerevanDatetime);
-  // const eventDate = computed<Date>(() => new Date(dateString as string));
   const date = computed<string>(() => datetimeObject.dateStr.split("-")[2]);
   const month = computed<string>(() => {
     const monthObject = {
@@ -22,10 +21,6 @@ export function useEventComputed(dateString?: string, minPrice?: number, maxPric
       "11": "ноября",
       "12": "декабря",
     };
-
-    console.log(new Date(yerevanDatetime.slice(0, -1)));
-    console.log(createDatetimeString(new Date().toISOString(), "Asia/Yerevan"));
-
     const monthStr = datetimeObject.dateStr.split("-")[1];
 
     return monthObject[monthStr as keyof typeof monthObject];

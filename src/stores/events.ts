@@ -101,7 +101,7 @@ export const useEventsStore = defineStore("events", () => {
             archived ? "desc" : "asc"
           }&pagination[page]=1&pagination[pageSize]=10`;
 
-    if (hasInternalDelay) await delay();
+    if (hasInternalDelay) await delay(500);
 
     return api
       .get(url)

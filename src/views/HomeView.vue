@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { defineAsyncComponent, ref } from "vue";
 import type { Ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useEventsStore } from "@/stores/events";
@@ -27,7 +27,8 @@ import type { IEvent } from "@/ts/interfaces/event";
 import type { IEventCategory } from "@/ts/interfaces/event-category";
 import delay from "@/utils/delay";
 import TheLoader from "@/components/TheLoader.vue";
-import EventCards from "@/components/EventCards.vue";
+
+const EventCards = defineAsyncComponent(() => import("@/components/EventCards.vue"));
 
 const { categorizedEvents } = storeToRefs(useEventsStore());
 const { eventsCategories } = storeToRefs(useEventsCategoriesStore());
@@ -53,7 +54,7 @@ const searchEventsHandler = async (searchStr: string) => {
 
   isLoading.value = true;
 
-  await delay();
+  await delay(500);
   await searchEvents(searchStr);
 
   isLoading.value = false;
@@ -62,7 +63,7 @@ const searchEventsHandler = async (searchStr: string) => {
 const getDataHandler = async () => {
   isLoading.value = true;
 
-  await delay();
+  await delay(500);
   await clearEvents();
   await getEventsCategories();
   await getEvents();

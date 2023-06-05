@@ -7,6 +7,7 @@ import { onMounted, onUnmounted, ref } from "vue";
 import type { Ref } from "vue";
 
 defineProps<{}>();
+
 const emit = defineEmits<{
   (e: "intersect"): void;
 }>();
