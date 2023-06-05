@@ -86,7 +86,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, reactive, ref, watch } from "vue";
+import { computed, onUnmounted, reactive, ref, watch } from "vue";
 import type { Ref } from "vue";
 import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
@@ -95,8 +95,8 @@ import type { IEvent } from "@/ts/interfaces/event";
 import { useEventsStore } from "@/stores/events";
 import { useEventComputed } from "@/composables/event-computed";
 import delay from "@/utils/delay";
-import TheLoader from "@/components/TheLoader.vue";
 import getYtEmbedLink from "@/utils/get-yt-embed-link";
+import TheLoader from "@/components/TheLoader.vue";
 
 interface IEventInfo {
   date: string | undefined;
@@ -128,7 +128,7 @@ const coverUrl = computed<string>(() => {
 const getEventHandler = async () => {
   isLoading.value = true;
 
-  await delay();
+  await delay(500);
   await getEvent(route.params.eventId as string);
 
   const { date, month, year, time, priceRange } = useEventComputed(

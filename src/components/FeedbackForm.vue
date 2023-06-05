@@ -95,7 +95,10 @@ const submitHandler = async () => {
   await resetMessages();
   await v$.value.$validate();
 
-  if (v$.value.$error) return;
+  if (v$.value.$error) {
+    isSending.value = false;
+    return;
+  }
 
   await sendEmail(formData).then(res => {
     if (res.status === "success") {
@@ -109,7 +112,7 @@ const submitHandler = async () => {
   isSending.value = false;
   setTimeout(() => {
     emit("close");
-  }, 2000);
+  }, 1000);
 };
 
 const resetMessages = () => {
@@ -135,10 +138,4 @@ onMounted(() => {
   opacity: 0;
   transform: translateY(50px);
 }
-
-//.form-fade-enter-from,
-//.form-fade-leave-to {
-//  transform: scale(1.2);
-//  opacity: 0;
-//}
 </style>
