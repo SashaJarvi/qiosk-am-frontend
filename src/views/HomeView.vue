@@ -54,7 +54,7 @@ const searchEventsHandler = async (searchStr: string) => {
 
   isLoading.value = true;
 
-  await delay(500);
+  // await delay(500);
   await searchEvents(searchStr);
 
   isLoading.value = false;
@@ -63,7 +63,7 @@ const searchEventsHandler = async (searchStr: string) => {
 const getDataHandler = async () => {
   isLoading.value = true;
 
-  await delay(500);
+  // await delay(500);
   await clearEvents();
   await getEventsCategories();
   await getEvents();

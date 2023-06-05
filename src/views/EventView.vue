@@ -128,7 +128,7 @@ const coverUrl = computed<string>(() => {
 const getEventHandler = async () => {
   isLoading.value = true;
 
-  await delay(500);
+  // await delay(500);
   await getEvent(route.params.eventId as string);
 
   const { date, month, year, time, priceRange } = useEventComputed(
