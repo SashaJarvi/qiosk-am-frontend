@@ -19,6 +19,8 @@
     "@vuelidate/validators": "^2.0.2",
     "@vueuse/head": "^1.1.23",
     "pinia": "^2.0.32",
+    "remark": "^14.0.3",
+    "strip-markdown": "^5.0.1",
     "vue": "^3.2.47",
     "vue-markdown-render": "^2.0.1",
     "vue-router": "^4.1.6",

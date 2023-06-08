@@ -6,7 +6,6 @@
           :events="(categorizedEvents as IEvent[])"
           :events-categories="eventsCategories as IEventCategory[]"
           @load-more="getEventsHandler"
-          @update-search-str="searchEventsHandler"
         />
 
         <the-loader v-if="isGettingMoreEvents" />
@@ -25,48 +24,36 @@ import { useEventsStore } from "@/stores/events";
 import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
 import type { IEventCategory } from "@/ts/interfaces/event-category";
-import delay from "@/utils/delay";
 import TheLoader from "@/components/TheLoader.vue";
 
 const EventCards = defineAsyncComponent(() => import("@/components/EventCards.vue"));
 
-const { categorizedEvents } = storeToRefs(useEventsStore());
+const { events, eventsToShow, categorizedEvents } = storeToRefs(useEventsStore());
 const { eventsCategories } = storeToRefs(useEventsCategoriesStore());
-const { getEvents, searchEvents, clearEvents, clearSearchedEvents } = useEventsStore();
+const { getEvents, setEventsToShow, resetEventsToShow, clearEvents } = useEventsStore();
 const { getEventsCategories } = useEventsCategoriesStore();
 
 const isLoading: Ref<boolean> = ref(false);
 const isGettingMoreEvents: Ref<boolean> = ref(false);
 
-const getEventsHandler = async () => {
+const getEventsHandler = () => {
+  if ((events.value as IEvent[]).length <= eventsToShow.value) return;
+
   isGettingMoreEvents.value = true;
 
-  await getEvents({ hasInternalDelay: true });
-
-  isGettingMoreEvents.value = false;
-};
-
-const searchEventsHandler = async (searchStr: string) => {
-  if (!searchStr) {
-    clearSearchedEvents();
-    return;
-  }
-
-  isLoading.value = true;
-
-  // await delay(500);
-  await searchEvents(searchStr);
-
-  isLoading.value = false;
+  setTimeout(() => {
+    setEventsToShow();
+    isGettingMoreEvents.value = false;
+  }, 300);
 };
 
 const getDataHandler = async () => {
   isLoading.value = true;
 
-  // await delay(500);
   await clearEvents();
   await getEventsCategories();
   await getEvents();
+  resetEventsToShow();
 
   isLoading.value = false;
 };

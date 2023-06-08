@@ -23,24 +23,24 @@
             </li>
           </ul>
 
-          <!--          <div v-if="!isArchivePage" class="events__search-wrapper">-->
-          <!--            <svg-->
-          <!--              class="events__search-icon"-->
-          <!--              xmlns="http://www.w3.org/2000/svg"-->
-          <!--              width="24"-->
-          <!--              height="24"-->
-          <!--              viewBox="0 0 24 24"-->
-          <!--              fill="none"-->
-          <!--              stroke="#000000"-->
-          <!--              stroke-width="2"-->
-          <!--              stroke-linecap="round"-->
-          <!--              stroke-linejoin="round"-->
-          <!--            >-->
-          <!--              <circle cx="11" cy="11" r="8"></circle>-->
-          <!--              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>-->
-          <!--            </svg>-->
-          <!--            <input v-model="searchStr" class="events__search" type="text" />-->
-          <!--          </div>-->
+          <div v-if="!isArchivePage" class="events__search-wrapper">
+            <svg
+              class="events__search-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#000000"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input v-model="searchStr" class="events__search" type="text" />
+          </div>
         </div>
       </nav>
 
@@ -60,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from "vue";
+import { computed } from "vue";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { useEventsStore } from "@/stores/events";
@@ -83,7 +83,6 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: "load-more"): void;
-  (e: "update-search-str", str: string): void;
 }>();
 
 const isArchivePage = computed<boolean>(() => route.name === "events-archive");
@@ -93,12 +92,10 @@ const resetSearch = () => {
 };
 
 const intersectCatch = () => {
+  if (searchedEvents.value?.length) return;
+
   emit("load-more");
 };
-
-watch(searchStr, value => {
-  emit("update-search-str", value);
-});
 </script>
 
 <style lang="scss" scoped>

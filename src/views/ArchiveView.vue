@@ -33,36 +33,38 @@ import { useEventsStore } from "@/stores/events";
 import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
 import type { IEventCategory } from "@/ts/interfaces/event-category";
-import delay from "@/utils/delay";
 import TheLoader from "@/components/TheLoader.vue";
 
 const EventCards = defineAsyncComponent(() => import("@/components/EventCards.vue"));
 
 const route = useRoute();
 
-const { categorizedEvents } = storeToRefs(useEventsStore());
+const { events, eventsToShow, categorizedEvents } = storeToRefs(useEventsStore());
 const { eventsCategories } = storeToRefs(useEventsCategoriesStore());
-const { getEvents, clearEvents } = useEventsStore();
+const { getEvents, setEventsToShow, resetEventsToShow, clearEvents } = useEventsStore();
 const { getEventsCategories } = useEventsCategoriesStore();
 
 const isLoading: Ref<boolean> = ref(false);
 const isGettingMoreEvents: Ref<boolean> = ref(false);
 
-const getEventsHandler = async () => {
+const getEventsHandler = () => {
+  if ((events.value as IEvent[]).length <= eventsToShow.value) return;
+
   isGettingMoreEvents.value = true;
 
-  await getEvents({ archived: true, hasInternalDelay: true });
-
-  isGettingMoreEvents.value = false;
+  setTimeout(() => {
+    setEventsToShow();
+    isGettingMoreEvents.value = false;
+  }, 300);
 };
 
 const getDataHandler = async () => {
   isLoading.value = true;
 
-  // await delay(500);
   await clearEvents();
   await getEventsCategories();
-  await getEvents({ archived: true });
+  await getEvents(true);
+  resetEventsToShow();
 
   isLoading.value = false;
 };
