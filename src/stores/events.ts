@@ -105,7 +105,8 @@ export const useEventsStore = defineStore("events", () => {
   };
 
   const resetEventsToShow = () => {
-    eventsToShow.value = 3;
+    const initialEventsToShow: number = 3;
+    eventsToShow.value = initialEventsToShow;
   };
 
   const clearEvents = () => {
