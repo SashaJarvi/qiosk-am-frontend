@@ -92,12 +92,12 @@ export const useEventsStore = defineStore("events", () => {
       eventsMeta.pagination && eventsMeta.pagination.page
         ? `events?populate[0]=cover&populate[1]=event_category&filters[datetime][${
             archived ? "$lt" : "$gt"
-          }]=${createDatetimeString(new Date().toISOString(), "Asia/Yerevan")}&sort=datetime:${
-            archived ? "desc" : "asc"
-          }&pagination[page]=${eventsMeta.pagination.page + 1}&pagination[pageSize]=${eventsMeta.pagination.pageCount}`
+          }]=${new Date().toISOString()}&sort=datetime:${archived ? "desc" : "asc"}&pagination[page]=${
+            eventsMeta.pagination.page + 1
+          }&pagination[pageSize]=${eventsMeta.pagination.pageCount}`
         : `events?populate[0]=cover&populate[1]=event_category&filters[datetime][${
             archived ? "$lt" : "$gt"
-          }]=${createDatetimeString(new Date().toISOString(), "Asia/Yerevan")}&sort=datetime:${
+          }]=${new Date().toISOString()}&sort=datetime:${
             archived ? "desc" : "asc"
           }&pagination[page]=1&pagination[pageSize]=5`;
 
