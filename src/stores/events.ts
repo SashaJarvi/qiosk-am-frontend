@@ -63,7 +63,7 @@ export const useEventsStore = defineStore("events", () => {
   const getEvents = async (archived?: boolean) => {
     const url = `events?populate[0]=cover&populate[1]=event_category&filters[datetime][${
       archived ? "$lt" : "$gt"
-    }]=${createDatetimeString(new Date().toISOString(), "Asia/Yerevan")}&sort=datetime:${archived ? "desc" : "asc"}`;
+    }]=${new Date().toISOString()}&sort=datetime:${archived ? "desc" : "asc"}`;
 
     return api
       .get(url)
