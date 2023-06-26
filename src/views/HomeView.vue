@@ -30,7 +30,7 @@ const EventCards = defineAsyncComponent(() => import("@/components/EventCards.vu
 
 const { events, eventsToShow, categorizedEvents } = storeToRefs(useEventsStore());
 const { eventsCategories } = storeToRefs(useEventsCategoriesStore());
-const { getEvents, setEventsToShow, resetEventsToShow, clearEvents } = useEventsStore();
+const { getEvents, setEventsToShow, resetEventsToShow, clearEvents, clearSearch } = useEventsStore();
 const { getEventsCategories } = useEventsCategoriesStore();
 
 const isLoading: Ref<boolean> = ref(false);
@@ -49,6 +49,7 @@ const getEventsHandler = () => {
 
 const getDataHandler = async () => {
   isLoading.value = true;
+  clearSearch();
 
   await clearEvents();
   await getEventsCategories();

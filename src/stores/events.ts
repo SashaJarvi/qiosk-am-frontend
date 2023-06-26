@@ -5,7 +5,6 @@ import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
 import type { IEventCategory } from "@/ts/interfaces/event-category";
 import api from "@/api";
-import createDatetimeString from "@/utils/create-datetime-string";
 
 interface IFormData {
   name: string;
@@ -14,21 +13,15 @@ interface IFormData {
 }
 
 export const useEventsStore = defineStore("events", () => {
-  const events: Ref<IEvent[] | null> = ref(null);
+  const events: Ref<IEvent[]> = ref([]);
   const searchStr: Ref<string> = ref("");
   const eventsToShow: Ref<number> = ref(3);
   const event: Ref<IEvent | null> = ref(null);
 
   const { eventsCategory } = storeToRefs(useEventsCategoriesStore());
 
-  const visibleEvents = computed<IEvent[] | null>(() => {
-    if (!events.value?.length) return null;
-
-    return eventsToShow.value === events.value?.length ? events.value : events.value.slice(0, eventsToShow.value);
-  });
-
-  const searchedEvents = computed<IEvent[] | null>(() => {
-    if (!events.value?.length || !searchStr.value) return null;
+  const searchedEvents = computed<IEvent[]>(() => {
+    if (!events.value.length || !searchStr.value) return [];
 
     return events.value.filter(event => {
       const lowerSearchStr = searchStr.value.toLowerCase();
@@ -44,20 +37,30 @@ export const useEventsStore = defineStore("events", () => {
     });
   });
 
-  const categorizedEvents = computed<IEvent[] | null>(() => {
+  const categorizedEvents = computed<IEvent[]>(() => {
+    if (!events.value.length) return [];
+
     if (!eventsCategory.value) {
-      return searchedEvents.value && searchedEvents.value.length ? searchedEvents.value : visibleEvents.value;
+      return searchedEvents.value && searchedEvents.value.length ? searchedEvents.value : events.value;
     }
 
-    if (searchedEvents.value && searchedEvents.value.length) {
+    if (searchedEvents.value.length) {
       return (searchedEvents.value as IEvent[]).filter(
         event => event.attributes.event_category.data.id === (eventsCategory.value as IEventCategory).id,
       );
     }
 
-    return (visibleEvents.value as IEvent[]).filter(
+    return (events.value as IEvent[]).filter(
       event => event.attributes.event_category.data.id === (eventsCategory.value as IEventCategory).id,
     );
+  });
+
+  const visibleEvents = computed<IEvent[]>(() => {
+    if (!categorizedEvents.value.length) return [];
+
+    return eventsToShow.value === categorizedEvents.value.length
+      ? categorizedEvents.value
+      : categorizedEvents.value.slice(0, eventsToShow.value);
   });
 
   const getEvents = async (archived?: boolean) => {
@@ -110,11 +113,15 @@ export const useEventsStore = defineStore("events", () => {
   };
 
   const clearEvents = () => {
-    events.value = null;
+    events.value = [];
   };
 
   const clearEvent = () => {
     event.value = null;
+  };
+
+  const clearSearch = () => {
+    searchStr.value = "";
   };
 
   return {
@@ -132,5 +139,6 @@ export const useEventsStore = defineStore("events", () => {
     resetEventsToShow,
     clearEvents,
     clearEvent,
+    clearSearch,
   };
 });
