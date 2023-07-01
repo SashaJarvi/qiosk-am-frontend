@@ -9,6 +9,7 @@ export interface IEvent {
     event_category: {
       data: IEventCategory;
     };
+    locale: string;
     datetime: string;
     min_price: number;
     max_price: number | undefined;
@@ -18,5 +19,8 @@ export interface IEvent {
     short_description: string;
     tickets_link: string;
     youtube_video?: string;
+    localizations: {
+      data: IEvent[];
+    };
   };
 }

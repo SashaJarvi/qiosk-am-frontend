@@ -2,7 +2,7 @@
   <main class="policy">
     <div class="container">
       <article class="policy__content">
-        <router-link to="/" class="read-more">
+        <router-link :to="Tr.i18nRoute({ name: 'home' })" class="read-more">
           <span>Вернуться назад</span> <img src="/images/arrows/arrow-left.svg" alt="arrow-left" />
         </router-link>
 
@@ -40,6 +40,7 @@
 
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
+import Tr from "@/i18n/translation";
 </script>
 
 <style lang="scss" scoped>

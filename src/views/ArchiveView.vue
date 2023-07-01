@@ -12,7 +12,7 @@
         <the-loader v-if="isGettingMoreEvents" />
 
         <div class="container">
-          <router-link :to="route.params.archived ? '/archive' : '/'" class="back-btn">
+          <router-link :to="Tr.i18nRoute({ name: 'home' })" class="back-btn">
             <span>Вернуться назад</span>
             <img src="/images/arrows/arrow-left.svg" alt="arrow-left" />
           </router-link>
@@ -25,19 +25,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, defineAsyncComponent } from "vue";
+import { ref, provide, defineAsyncComponent, watch } from "vue";
 import type { Ref } from "vue";
 import { storeToRefs } from "pinia";
-import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
 import { useEventsStore } from "@/stores/events";
 import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
 import type { IEventCategory } from "@/ts/interfaces/event-category";
+import Tr from "@/i18n/translation";
 import TheLoader from "@/components/TheLoader.vue";
 
 const EventCards = defineAsyncComponent(() => import("@/components/EventCards.vue"));
 
-const route = useRoute();
+const { locale } = useI18n();
 
 const { events, eventsToShow, categorizedEvents } = storeToRefs(useEventsStore());
 const { eventsCategories } = storeToRefs(useEventsCategoriesStore());
@@ -70,9 +71,13 @@ const getDataHandler = async () => {
   isLoading.value = false;
 };
 
-getDataHandler();
+watch(locale, () => {
+  getDataHandler();
+});
 
 provide("archived", true);
+
+getDataHandler();
 </script>
 
 <style lang="scss" scoped>

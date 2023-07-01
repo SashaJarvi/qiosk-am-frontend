@@ -77,7 +77,10 @@
 
       <the-loader v-else-if="isLoading" />
 
-      <router-link :to="route.query.archived ? '/archive' : '/'" class="read-more__btn">
+      <router-link
+        :to="route.query.archived ? Tr.i18nRoute({ name: 'events-archive' }) : Tr.i18nRoute({ name: 'home' })"
+        class="read-more__btn"
+      >
         <span>Вернуться назад</span>
         <img src="/images/arrows/arrow-left.svg" alt="arrow-left" />
       </router-link>
@@ -88,14 +91,15 @@
 <script lang="ts" setup>
 import { computed, onUnmounted, reactive, ref, watch } from "vue";
 import type { Ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
 import VueMarkdown from "vue-markdown-render";
-import type { IEvent } from "@/ts/interfaces/event";
 import { useEventsStore } from "@/stores/events";
+import type { IEvent } from "@/ts/interfaces/event";
 import { useEventComputed } from "@/composables/event-computed";
-import delay from "@/utils/delay";
 import getYtEmbedLink from "@/utils/get-yt-embed-link";
+import Tr from "@/i18n/translation";
 import TheLoader from "@/components/TheLoader.vue";
 
 interface IEventInfo {
@@ -106,12 +110,20 @@ interface IEventInfo {
   priceRange: string | undefined;
 }
 
+interface IAvailableLocale {
+  id: number;
+  locale: string;
+}
+
+const router = useRouter();
 const route = useRoute();
+const { locale } = useI18n();
 
 const { event } = storeToRefs(useEventsStore());
 const { getEvent, clearEvent } = useEventsStore();
 
 const isLoading: Ref<boolean> = ref(false);
+const currentLocalizedEventId: Ref<number | null> = ref(null);
 const eventInfo = reactive<IEventInfo>({
   date: "",
   month: "",
@@ -124,12 +136,29 @@ const eventDescription = ref<HTMLDivElement | null>(null);
 const coverUrl = computed<string>(() => {
   return `${(event.value as IEvent).attributes.cover.data.attributes.url}`;
 });
+const availableLocales = computed<IAvailableLocale[]>(() => {
+  if (!event.value) return [];
+
+  const localizationsArr = event.value?.attributes.localizations.data;
+
+  if (!localizationsArr?.length) return [];
+
+  return [
+    { id: event.value.id, locale: event.value.attributes.locale },
+    ...localizationsArr.map(l => {
+      return {
+        id: l.id,
+        locale: l.attributes.locale,
+      };
+    }),
+  ];
+});
 
 const getEventHandler = async () => {
   isLoading.value = true;
 
-  // await delay(500);
   await getEvent(route.params.eventId as string);
+  currentLocalizedEventId.value = +route.params.eventId;
 
   const { date, month, year, time, priceRange } = useEventComputed(
     (event.value as IEvent).attributes.datetime,
@@ -159,6 +188,19 @@ watch(eventDescription, value => {
     link.style.textDecoration = "underline";
     link.setAttribute("target", "_blank");
   });
+});
+
+watch(locale, value => {
+  if (!availableLocales.value.length) return;
+
+  const eventIdByLocale = (availableLocales.value.find(l => l.locale === value) as IAvailableLocale).id;
+  currentLocalizedEventId.value = eventIdByLocale;
+});
+
+watch(currentLocalizedEventId, (value, oldValue) => {
+  if (!oldValue || !value) return;
+
+  router.push({ name: "event-page", params: { ...route.params, eventId: value } });
 });
 
 onUnmounted(() => {

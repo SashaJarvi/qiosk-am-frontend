@@ -2,7 +2,7 @@
   <section class="events">
     <div class="container">
       <nav class="events__catalog">
-        <h1 class="events__title">Каталог мероприятий</h1>
+        <h1 class="events__title">{{ $t("eventsCatalog") }}</h1>
 
         <div class="events__header">
           <ul class="events__category">
@@ -19,7 +19,7 @@
               </button>
             </li>
             <li v-if="!isArchivePage">
-              <router-link to="/archive" class="btn">Архив</router-link>
+              <router-link :to="Tr.i18nRoute({ name: 'events-archive' })" class="btn">Архив</router-link>
             </li>
           </ul>
 
@@ -70,6 +70,7 @@ import { useEventsStore } from "@/stores/events";
 import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
 import type { IEventCategory } from "@/ts/interfaces/event-category";
+import Tr from "@/i18n/translation";
 import EventCard from "@/components/EventCard.vue";
 import TheObserver from "@/components/TheObserver.vue";
 

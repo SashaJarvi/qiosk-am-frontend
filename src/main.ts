@@ -6,6 +6,7 @@ import VueYandexMetrika from "vue3-yandex-metrika";
 
 import App from "./App.vue";
 import router from "./router";
+import i18n from "@/i18n";
 
 import "./assets/scss/main.scss";
 
@@ -14,6 +15,7 @@ const head = createHead();
 
 app.use(createPinia());
 app.use(head);
+app.use(i18n);
 app.use(router);
 app.use(VueYandexMetrika, {
   id: import.meta.env.VITE_YM_ID,

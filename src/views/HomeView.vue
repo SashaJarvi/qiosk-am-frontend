@@ -17,9 +17,10 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref } from "vue";
+import { defineAsyncComponent, ref, watch } from "vue";
 import type { Ref } from "vue";
 import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
 import { useEventsStore } from "@/stores/events";
 import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
@@ -27,6 +28,8 @@ import type { IEventCategory } from "@/ts/interfaces/event-category";
 import TheLoader from "@/components/TheLoader.vue";
 
 const EventCards = defineAsyncComponent(() => import("@/components/EventCards.vue"));
+
+const { locale } = useI18n();
 
 const { events, eventsToShow, categorizedEvents } = storeToRefs(useEventsStore());
 const { eventsCategories } = storeToRefs(useEventsCategoriesStore());
@@ -58,6 +61,10 @@ const getDataHandler = async () => {
 
   isLoading.value = false;
 };
+
+watch(locale, () => {
+  getDataHandler();
+});
 
 getDataHandler();
 </script>

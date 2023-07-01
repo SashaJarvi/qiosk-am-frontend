@@ -1,6 +1,7 @@
-import { computed, ref } from "vue";
+import { ref, computed } from "vue";
 import type { Ref } from "vue";
 import { defineStore, storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
 import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
 import type { IEventCategory } from "@/ts/interfaces/event-category";
@@ -13,6 +14,8 @@ interface IFormData {
 }
 
 export const useEventsStore = defineStore("events", () => {
+  const { locale } = useI18n();
+
   const events: Ref<IEvent[]> = ref([]);
   const searchStr: Ref<string> = ref("");
   const eventsToShow: Ref<number> = ref(3);
@@ -64,7 +67,7 @@ export const useEventsStore = defineStore("events", () => {
   });
 
   const getEvents = async (archived?: boolean) => {
-    const url = `events?populate[0]=cover&populate[1]=event_category&filters[datetime][${
+    const url = `events?locale=${locale.value}&populate[0]=cover&populate[1]=event_category&filters[datetime][${
       archived ? "$lt" : "$gt"
     }]=${new Date().toISOString()}&sort=datetime:${archived ? "desc" : "asc"}`;
 
@@ -78,7 +81,7 @@ export const useEventsStore = defineStore("events", () => {
 
   const getEvent = async (eventId: string) => {
     return api
-      .get(`events/${eventId}?populate[0]=cover&populate[1]=event_category`)
+      .get(`events/${eventId}?locale=all&populate[0]=cover&populate[1]=event_category&populate[2]=localizations`)
       .then(res => res.json())
       .then(({ data }) => (event.value = data));
   };
