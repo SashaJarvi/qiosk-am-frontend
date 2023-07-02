@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory, RouterView } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import Tr from "@/i18n/translation";
-import EventView from "@/views/EventView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,8 +18,7 @@ const router = createRouter({
         {
           path: "event/:eventId",
           name: "event-page",
-          // component: () => import("@/views/EventView.vue"),
-          component: EventView,
+          component: () => import("@/views/EventView.vue"),
         },
         {
           path: "archive",

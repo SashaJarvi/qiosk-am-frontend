@@ -34,7 +34,7 @@ const { locale } = useI18n();
 const { events, eventsToShow, categorizedEvents } = storeToRefs(useEventsStore());
 const { eventsCategories } = storeToRefs(useEventsCategoriesStore());
 const { getEvents, setEventsToShow, resetEventsToShow, clearEvents, clearSearch } = useEventsStore();
-const { getEventsCategories } = useEventsCategoriesStore();
+const { getEventsCategories, clearCategory } = useEventsCategoriesStore();
 
 const isLoading: Ref<boolean> = ref(false);
 const isGettingMoreEvents: Ref<boolean> = ref(false);
@@ -63,6 +63,7 @@ const getDataHandler = async () => {
 };
 
 watch(locale, () => {
+  clearCategory();
   getDataHandler();
 });
 

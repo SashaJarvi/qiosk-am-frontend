@@ -81,7 +81,9 @@ export const useEventsStore = defineStore("events", () => {
 
   const getEvent = async (eventId: string) => {
     return api
-      .get(`events/${eventId}?locale=all&populate[0]=cover&populate[1]=event_category&populate[2]=localizations`)
+      .get(
+        `events/${eventId}?locale=${locale.value}&populate[0]=cover&populate[1]=event_category&populate[2]=localizations`,
+      )
       .then(res => res.json())
       .then(({ data }) => (event.value = data));
   };

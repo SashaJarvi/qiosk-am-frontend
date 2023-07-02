@@ -91,7 +91,7 @@
 <script lang="ts" setup>
 import { computed, onUnmounted, reactive, ref, watch } from "vue";
 import type { Ref } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 import VueMarkdown from "vue-markdown-render";
@@ -193,14 +193,14 @@ watch(eventDescription, value => {
 watch(locale, value => {
   if (!availableLocales.value.length) return;
 
-  const eventIdByLocale = (availableLocales.value.find(l => l.locale === value) as IAvailableLocale).id;
-  currentLocalizedEventId.value = eventIdByLocale;
+  currentLocalizedEventId.value = (availableLocales.value.find(l => l.locale === value) as IAvailableLocale).id;
 });
 
 watch(currentLocalizedEventId, (value, oldValue) => {
   if (!oldValue || !value) return;
 
-  router.push({ name: "event-page", params: { ...route.params, eventId: value } });
+  getEvent(String(value));
+  route.params.eventId = String(value);
 });
 
 onUnmounted(() => {
