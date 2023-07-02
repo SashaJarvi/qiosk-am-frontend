@@ -2,7 +2,7 @@
   <footer class="footer">
     <div class="container">
       <div class="footer__row">
-        <router-link :to="Tr.i18nRoute({ name: 'refund-policy' })">Политика возврата билетов</router-link>
+        <router-link :to="Tr.i18nRoute({ name: 'refund-policy' })">{{ $t("refund-policy.title") }}</router-link>
         <p>&copy; {{ currentYear }} qiosk.am</p>
       </div>
     </div>

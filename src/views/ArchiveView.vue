@@ -13,7 +13,7 @@
 
         <div class="container">
           <router-link :to="Tr.i18nRoute({ name: 'home' })" class="back-btn">
-            <span>Вернуться назад</span>
+            <span>{{ $t("event.back") }}</span>
             <img src="/images/arrows/arrow-left.svg" alt="arrow-left" />
           </router-link>
         </div>

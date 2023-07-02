@@ -16,7 +16,7 @@
           <div class="header__contacts">
             <a href="tel:37477233503" class="header__contacts-number">+374 77 233 503</a>
           </div>
-          <button class="write-btn" @click="toggleFeedbackForm">Написать нам!</button>
+          <button class="write-btn" @click="toggleFeedbackForm">{{ $t("forms.contact-us") }}</button>
         </div>
       </div>
 

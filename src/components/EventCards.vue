@@ -2,12 +2,12 @@
   <section class="events">
     <div class="container">
       <nav class="events__catalog">
-        <h1 class="events__title">{{ $t("eventsCatalog") }}</h1>
+        <h1 class="events__title">{{ $t("events.events-catalog") }}</h1>
 
         <div class="events__header">
-          <ul class="events__category">
+          <ul v-if="eventsCategories.length" class="events__category">
             <li>
-              <button class="btn btn--all" @click="clearCategory">Все</button>
+              <button class="btn btn--all" @click="clearCategory">{{ $t("events.all") }}</button>
             </li>
             <li v-for="category in eventsCategories" :key="category.id">
               <button
@@ -19,7 +19,9 @@
               </button>
             </li>
             <li v-if="!isArchivePage">
-              <router-link :to="Tr.i18nRoute({ name: 'events-archive' })" class="btn">Архив</router-link>
+              <router-link :to="Tr.i18nRoute({ name: 'events-archive' })" class="btn">{{
+                $t("events.archive")
+              }}</router-link>
             </li>
           </ul>
 
@@ -44,20 +46,20 @@
         </div>
       </nav>
 
-      <div v-if="visibleEvents.length" class="events__cards">
+      <p
+        v-if="(searchStr && !searchedEvents.length) || (searchedEvents.length && !visibleEvents.length)"
+        class="events__no-cards"
+      >
+        {{ $t("events.not-found") }}
+        <button @click="resetSearch">{{ $t("events.click-to-show") }}</button>
+      </p>
+
+      <div v-else-if="visibleEvents.length" class="events__cards">
         <event-card v-for="event in visibleEvents" :key="event.id" :event="event" />
         <the-observer @intersect="intersectCatch" />
       </div>
 
-      <p
-        v-else-if="(searchStr && !searchedEvents.length) || (searchedEvents.length && !visibleEvents.length)"
-        class="events__no-cards"
-      >
-        Мероприятия по запросу не найдены.
-        <button @click="resetSearch">Нажмите, чтобы показать все мероприятия</button>
-      </p>
-
-      <p v-else class="events__no-cards">Каталог пока пуст.</p>
+      <p v-else class="events__no-cards">{{ $t("events.empty") }}</p>
     </div>
   </section>
 </template>

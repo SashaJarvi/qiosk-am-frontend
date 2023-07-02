@@ -111,8 +111,11 @@
 
 .events__category {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  column-gap: 16px;
+  gap: 16px;
+  max-width: 760px;
+  width: 100%;
 
   .btn {
     background-color: #ffdd00;

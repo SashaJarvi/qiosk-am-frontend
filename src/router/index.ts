@@ -32,6 +32,14 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/login",
+      name: "login",
+      component: () => import("@/views/LoginView.vue"),
+      beforeEnter(to, from, next) {
+        window.location.href = "https://qiosk.tickettool.net/login";
+      },
+    },
   ],
 });
 

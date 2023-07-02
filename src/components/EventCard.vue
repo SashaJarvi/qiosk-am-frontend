@@ -46,11 +46,11 @@
                 ...(archived && { query: { archived: true } }),
               })
             "
-            >Подробнее о мероприятии
+            >{{ $t("event.details") }}
           </router-link>
 
           <a v-if="!archived" class="btn-buy" :href="event.attributes.tickets_link" target="_blank">
-            <span>Купить билет</span>
+            <span>{{ $t("event.ticket") }}</span>
             <img alt="arrow-right" src="/images/arrows/arrow-right.svg" />
           </a>
         </div>
@@ -59,7 +59,7 @@
           <div class="card__organization-item">
             <h4 class="card__organization-title">
               <img alt="calendar" src="/images/events-icons/calendar.svg" />
-              <span>Дата</span>
+              <span>{{ $t("event.date") }}</span>
             </h4>
 
             <div class="card__organization-descr">
@@ -72,7 +72,7 @@
           <div class="card__organization-item">
             <h4 class="card__organization-title">
               <img alt="calendar" src="/images/events-icons/marker.svg" />
-              <span>Место проведения</span>
+              <span>{{ $t("event.place") }}</span>
             </h4>
 
             <div class="card__organization-descr">
@@ -85,7 +85,7 @@
           <div class="card__organization-item">
             <h4 class="card__organization-title">
               <img alt="calendar" src="/images/events-icons/cards.svg" />
-              <span>Стоимость</span>
+              <span>{{ $t("event.price") }}</span>
             </h4>
 
             <div class="card__organization-descr card__organization-descr--short">
