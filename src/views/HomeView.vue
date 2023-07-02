@@ -3,8 +3,8 @@
     <transition v-if="!isLoading && categorizedEvents" name="events-fade" mode="out-in" appear>
       <div>
         <event-cards
-          :events="(categorizedEvents as IEvent[])"
-          :events-categories="eventsCategories as IEventCategory[]"
+          :events="categorizedEvents"
+          :events-categories="nonEmptyEventsCategories"
           @load-more="getEventsHandler"
         />
 
@@ -32,7 +32,7 @@ const EventCards = defineAsyncComponent(() => import("@/components/EventCards.vu
 const { locale } = useI18n();
 
 const { events, eventsToShow, categorizedEvents } = storeToRefs(useEventsStore());
-const { eventsCategories } = storeToRefs(useEventsCategoriesStore());
+const { eventsCategories, nonEmptyEventsCategories } = storeToRefs(useEventsCategoriesStore());
 const { getEvents, setEventsToShow, resetEventsToShow, clearEvents, clearSearch } = useEventsStore();
 const { getEventsCategories, clearCategory } = useEventsCategoriesStore();
 
