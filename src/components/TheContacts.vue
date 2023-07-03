@@ -3,7 +3,7 @@
     <div class="container">
       <div class="contacts__row">
         <div class="contacts__social-wrapper">
-          <router-link to="/" class="contacts__logo">
+          <router-link :to="Tr.i18nRoute({ name: 'home' })" class="contacts__logo">
             <img width="135" height="118" src="/images/logo/logo-contacts.svg" alt="logo contacts" />
           </router-link>
 
@@ -53,6 +53,7 @@
 import { computed, ref } from "vue";
 import type { Ref } from "vue";
 import chunkArray from "@/utils/chunk-array";
+import Tr from "@/i18n/translation";
 
 interface ISocialLink {
   href: string;

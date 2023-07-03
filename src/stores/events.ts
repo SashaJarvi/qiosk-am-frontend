@@ -1,28 +1,11 @@
-import { computed, reactive, ref, watch } from "vue";
+import { ref, computed } from "vue";
 import type { Ref } from "vue";
 import { defineStore, storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
 import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
 import type { IEventCategory } from "@/ts/interfaces/event-category";
 import api from "@/api";
-import delay from "@/utils/delay";
-import useDebouncedRef from "@/composables/debounced-ref";
-import removeDuplicateObjects from "@/utils/remove-duplicate-objects";
-import createDatetimeString from "@/utils/create-datetime-string";
-
-interface IMeta {
-  pagination: {
-    page: number | null;
-    pageCount: number | null;
-    pageSize: number | null;
-    total: number | null;
-  };
-}
-
-interface IGetEventsParams {
-  archived?: boolean;
-  hasInternalDelay?: boolean;
-}
 
 interface IFormData {
   name: string;
@@ -31,35 +14,40 @@ interface IFormData {
 }
 
 export const useEventsStore = defineStore("events", () => {
-  const events: Ref<IEvent[] | null> = ref(null);
-  const searchStr = useDebouncedRef("", 1000, false);
-  const searchedEvents: Ref<IEvent[] | null> = ref(null);
+  const { locale } = useI18n();
+
+  const events: Ref<IEvent[]> = ref([]);
+  const searchStr: Ref<string> = ref("");
+  const eventsToShow: Ref<number> = ref(3);
   const event: Ref<IEvent | null> = ref(null);
-  const eventsMeta = reactive<IMeta>({
-    pagination: {
-      page: null,
-      pageCount: null,
-      pageSize: null,
-      total: null,
-    },
-  });
-  const searchedEventsMeta = reactive<IMeta>({
-    pagination: {
-      page: null,
-      pageCount: null,
-      pageSize: null,
-      total: null,
-    },
-  });
 
   const { eventsCategory } = storeToRefs(useEventsCategoriesStore());
 
-  const categorizedEvents = computed<IEvent[] | null>(() => {
+  const searchedEvents = computed<IEvent[]>(() => {
+    if (!events.value.length || !searchStr.value) return [];
+
+    return events.value.filter(event => {
+      const lowerSearchStr = searchStr.value.toLowerCase();
+      const lowerTitle = event.attributes.title.toLowerCase();
+      const lowerShortDescription = event.attributes.short_description.toLowerCase();
+      const lowerDescription = event.attributes.description.toLowerCase();
+
+      return (
+        lowerDescription.includes(lowerSearchStr) ||
+        lowerShortDescription.includes(lowerSearchStr) ||
+        lowerTitle.includes(lowerSearchStr)
+      );
+    });
+  });
+
+  const categorizedEvents = computed<IEvent[]>(() => {
+    if (!events.value.length) return [];
+
     if (!eventsCategory.value) {
       return searchedEvents.value && searchedEvents.value.length ? searchedEvents.value : events.value;
     }
 
-    if (searchedEvents.value && searchedEvents.value.length) {
+    if (searchedEvents.value.length) {
       return (searchedEvents.value as IEvent[]).filter(
         event => event.attributes.event_category.data.id === (eventsCategory.value as IEventCategory).id,
       );
@@ -70,92 +58,32 @@ export const useEventsStore = defineStore("events", () => {
     );
   });
 
-  const getEvents = async (params?: IGetEventsParams) => {
-    let archived;
-    let hasInternalDelay;
+  const visibleEvents = computed<IEvent[]>(() => {
+    if (!categorizedEvents.value.length) return [];
 
-    if (params) {
-      archived = params.archived;
-      hasInternalDelay = params.hasInternalDelay;
-    }
+    return eventsToShow.value === categorizedEvents.value.length
+      ? categorizedEvents.value
+      : categorizedEvents.value.slice(0, eventsToShow.value);
+  });
 
-    if (
-      eventsMeta.pagination &&
-      eventsMeta.pagination.page &&
-      eventsMeta.pagination.pageCount &&
-      eventsMeta.pagination.page >= eventsMeta.pagination.pageCount
-    ) {
-      return;
-    }
-
-    const url =
-      eventsMeta.pagination && eventsMeta.pagination.page
-        ? `events?populate[0]=cover&populate[1]=event_category&filters[datetime][${
-            archived ? "$lt" : "$gt"
-          }]=${new Date().toISOString()}&sort=datetime:${archived ? "desc" : "asc"}&pagination[page]=${
-            eventsMeta.pagination.page + 1
-          }&pagination[pageSize]=${eventsMeta.pagination.pageCount}`
-        : `events?populate[0]=cover&populate[1]=event_category&filters[datetime][${
-            archived ? "$lt" : "$gt"
-          }]=${new Date().toISOString()}&sort=datetime:${
-            archived ? "desc" : "asc"
-          }&pagination[page]=1&pagination[pageSize]=5`;
-
-    if (hasInternalDelay) await delay(300);
+  const getEvents = async (archived?: boolean) => {
+    const url = `events?locale=${locale.value}&populate[0]=cover&populate[1]=event_category&filters[datetime][${
+      archived ? "$lt" : "$gt"
+    }]=${new Date().toISOString()}&sort=datetime:${archived ? "desc" : "asc"}`;
 
     return api
       .get(url)
       .then(res => res.json())
-      .then(({ data, meta }) => {
-        eventsMeta.pagination.page = meta.pagination.page;
-        eventsMeta.pagination.pageCount = meta.pagination.pageCount;
-        eventsMeta.pagination.pageSize = meta.pagination.pageSize;
-        eventsMeta.pagination.total = meta.pagination.total;
-
+      .then(({ data }) => {
         events.value = events.value?.length ? [...events.value, ...data] : data;
-      });
-  };
-
-  const searchEvents = async (searchStr: string, hasInternalDelay?: boolean) => {
-    const url =
-      searchedEventsMeta.pagination && searchedEventsMeta.pagination.page
-        ? `events?populate[0]=cover&populate[1]=event_category&filters[$or][0][title][$containsi]=${searchStr}&filters[$or][1][description][$containsi]=${searchStr}&filters[$or][2][short_description][$containsi]=${searchStr}&filters[datetime][$gt]=${createDatetimeString(
-            new Date().toISOString(),
-            "Asia/Yerevan",
-          )}&sort[0]=datetime&pagination[page]=${searchedEventsMeta.pagination.page + 1}&pagination[pageSize]=${
-            searchedEventsMeta.pagination.pageCount
-          }`
-        : `events?populate[0]=cover&populate[1]=event_category&filters[$or][0][title][$containsi]=${searchStr}&filters[$or][1][description][$containsi]=${searchStr}&filters[$or][2][short_description][$containsi]=${searchStr}&filters[datetime][$gt]=${createDatetimeString(
-            new Date().toISOString(),
-            "Asia/Yerevan",
-          )}&sort[0]=datetime&pagination[page]=1&pagination[pageSize]=10`;
-
-    if (hasInternalDelay) await delay();
-
-    return api
-      .get(url)
-      .then(res => res.json())
-      .then(({ data, meta }) => {
-        if (!data.length) {
-          searchedEvents.value = [];
-          resetPagination();
-          return;
-        }
-
-        searchedEventsMeta.pagination.page = meta.pagination.page;
-        searchedEventsMeta.pagination.pageCount = meta.pagination.pageCount;
-        searchedEventsMeta.pagination.pageSize = meta.pagination.pageSize;
-        searchedEventsMeta.pagination.total = meta.pagination.total;
-
-        searchedEvents.value = searchedEvents.value?.length
-          ? removeDuplicateObjects([...searchedEvents.value, ...data], "id")
-          : data;
       });
   };
 
   const getEvent = async (eventId: string) => {
     return api
-      .get(`events/${eventId}?populate[0]=cover&populate[1]=event_category`)
+      .get(
+        `events/${eventId}?locale=${locale.value}&populate[0]=cover&populate[1]=event_category&populate[2]=localizations`,
+      )
       .then(res => res.json())
       .then(({ data }) => (event.value = data));
   };
@@ -173,53 +101,49 @@ export const useEventsStore = defineStore("events", () => {
       });
   };
 
-  const clearEvents = () => {
-    const metaPagination = eventsMeta.pagination;
+  const setEventsToShow = () => {
+    const basicValue: number = 3;
 
-    events.value = null;
-    Object.keys(metaPagination).forEach(key => {
-      metaPagination[key as keyof typeof metaPagination] = null;
-    });
+    if (eventsToShow.value >= (events.value as IEvent[]).length) {
+      eventsToShow.value = (events.value as IEvent[]).length;
+      return;
+    }
+
+    eventsToShow.value += basicValue;
   };
 
-  const clearSearchedEvents = () => {
-    const metaSearchedPagination = searchedEventsMeta.pagination;
+  const resetEventsToShow = () => {
+    const initialEventsToShow: number = 3;
+    eventsToShow.value = initialEventsToShow;
+  };
 
-    searchedEvents.value = null;
-    Object.keys(metaSearchedPagination).forEach(key => {
-      metaSearchedPagination[key as keyof typeof metaSearchedPagination] = null;
-    });
+  const clearEvents = () => {
+    events.value = [];
   };
 
   const clearEvent = () => {
     event.value = null;
   };
 
-  const resetPagination = () => {
-    searchedEventsMeta.pagination.page = null;
-    searchedEventsMeta.pagination.pageCount = null;
-    searchedEventsMeta.pagination.pageSize = null;
-    searchedEventsMeta.pagination.total = null;
+  const clearSearch = () => {
+    searchStr.value = "";
   };
-
-  watch(searchStr, () => {
-    resetPagination();
-  });
 
   return {
     events,
     searchStr,
+    eventsToShow,
+    visibleEvents,
     searchedEvents,
     event,
-    eventsMeta,
-    searchedEventsMeta,
     categorizedEvents,
     getEvents,
-    searchEvents,
     getEvent,
     sendEmail,
+    setEventsToShow,
+    resetEventsToShow,
     clearEvents,
-    clearSearchedEvents,
     clearEvent,
+    clearSearch,
   };
 });

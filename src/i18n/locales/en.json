@@ -1,0 +1,61 @@
+{
+  "locale": {
+    "ru": "Russian",
+    "en": "English",
+    "hy": "Armenian"
+  },
+  "forms": {
+    "contact-us": "Contact us",
+    "feedback": "Feedback",
+    "name": "Name",
+    "enter-name": "Enter the name",
+    "enter-email": "Enter the email",
+    "enter-correct-email": "Enter the email in the correct format",
+    "message": "Message",
+    "enter-message": "Enter the message",
+    "send-message": "Send the message",
+    "request-accepted": "Request has been accepted!",
+    "we-will-contact": "We will contact you recently",
+    "error": "There is an error, try again"
+  },
+  "refund-policy": {
+    "title": "Tickets refund policy",
+    "service-fee": "The return of tickets purchased on the qiosk.am website is carried out with a service fee.",
+    "service-fee-amount": "Service fee:",
+    "7-days-more": "If you return a ticket more than 7 days before the start of the event, the service fee is 10% of the price.",
+    "7-days-less": "When returning a ticket less than 7, but more than 3 days before the start of the event, the service fee is 20%.",
+    "72-hours": "Events that start after 72 hours or less are non-refundable.",
+    "cancel": "If the event is canceled or rescheduled by the organizers, tickets will be refunded without service charge.",
+    "term": "Refunds are made by the bank within up to 7 working days and we cannot influence the term for crediting money."
+  },
+  "events": {
+    "events-catalog": "Events catalog",
+    "all": "All",
+    "archive": "Archive",
+    "not-found": "Events on request were not found.",
+    "click-to-show": "Click to show all events",
+    "empty": "Catalog is still empty."
+  },
+  "event": {
+    "details": "Event details",
+    "ticket": "Buy ticket",
+    "back": "Go back",
+    "date": "Date",
+    "place": "Place",
+    "price": "Price"
+  },
+  "months": {
+    "jan": "January",
+    "feb": "February",
+    "mar": "March",
+    "apr": "April",
+    "may": "May",
+    "jun": "June",
+    "jul": "July",
+    "aug": "August",
+    "sep": "September",
+    "oct": "October",
+    "nov": "November",
+    "dec": "December"
+  }
+}

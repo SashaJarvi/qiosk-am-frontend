@@ -19,7 +19,7 @@
                 target="_blunk"
                 class="read-more-card__btn btn-buy"
               >
-                <span>Купить билет</span>
+                <span>{{ $t("event.ticket") }}</span>
                 <img src="/images/arrows/arrow-right.svg" alt="arrow-right" />
               </a>
 
@@ -28,7 +28,7 @@
                   <div class="read-more__item-img">
                     <img src="/images/events-icons/calendar.svg" alt="calendar" />
                   </div>
-                  <span>{{ eventInfo.date }} {{ eventInfo.month }} в {{ eventInfo.time }}</span>
+                  <span>{{ eventInfo.date }} {{ eventInfo.month }} {{ eventInfo.time }}</span>
                 </li>
 
                 <li class="read-more__item">
@@ -77,8 +77,11 @@
 
       <the-loader v-else-if="isLoading" />
 
-      <router-link :to="route.query.archived ? '/archive' : '/'" class="read-more__btn">
-        <span>Вернуться назад</span>
+      <router-link
+        :to="route.query.archived ? Tr.i18nRoute({ name: 'events-archive' }) : Tr.i18nRoute({ name: 'home' })"
+        class="read-more__btn"
+      >
+        <span>{{ $t("event.back") }}</span>
         <img src="/images/arrows/arrow-left.svg" alt="arrow-left" />
       </router-link>
     </div>
@@ -86,62 +89,123 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onUnmounted, reactive, ref, watch } from "vue";
+import { computed, onUnmounted, ref, watch } from "vue";
 import type { Ref } from "vue";
 import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
 import VueMarkdown from "vue-markdown-render";
-import type { IEvent } from "@/ts/interfaces/event";
 import { useEventsStore } from "@/stores/events";
-import { useEventComputed } from "@/composables/event-computed";
-import delay from "@/utils/delay";
+import type { IEvent } from "@/ts/interfaces/event";
 import getYtEmbedLink from "@/utils/get-yt-embed-link";
+import Tr from "@/i18n/translation";
 import TheLoader from "@/components/TheLoader.vue";
+import createDatetimeString from "@/utils/create-datetime-string";
+import separateDateTime from "@/utils/separate-date-time";
 
 interface IEventInfo {
   date: string | undefined;
   month: string | undefined;
-  year: string | undefined;
   time: string | undefined;
   priceRange: string | undefined;
 }
 
+interface IAvailableLocale {
+  id: number;
+  locale: string;
+}
+
 const route = useRoute();
+const { t, locale } = useI18n();
 
 const { event } = storeToRefs(useEventsStore());
 const { getEvent, clearEvent } = useEventsStore();
 
 const isLoading: Ref<boolean> = ref(false);
-const eventInfo = reactive<IEventInfo>({
-  date: "",
-  month: "",
-  year: "",
-  time: "",
-  priceRange: "",
-});
+const currentLocalizedEventId: Ref<number | null> = ref(null);
 const eventDescription = ref<HTMLDivElement | null>(null);
 
+const eventInfo = computed<IEventInfo | null>(() => {
+  if (!event.value) return null;
+
+  const yerevanDatetime = createDatetimeString(event.value?.attributes.datetime, "Asia/Yerevan");
+  const datetimeObject = separateDateTime(yerevanDatetime);
+  const monthObject = {
+    "01": t("months.jan"),
+    "02": t("months.feb"),
+    "03": t("months.mar"),
+    "04": t("months.apr"),
+    "05": t("months.may"),
+    "06": t("months.jun"),
+    "07": t("months.jul"),
+    "08": t("months.aug"),
+    "09": t("months.sep"),
+    "10": t("months.oct"),
+    "11": t("months.nov"),
+    "12": t("months.dec"),
+  };
+  const monthStr = datetimeObject.dateStr.split("-")[1];
+
+  return {
+    date: datetimeObject.dateStr.split("-")[2],
+    month: monthObject[monthStr as keyof typeof monthObject],
+    time: datetimeObject.timeStr,
+    priceRange: event.value.attributes.max_price
+      ? `${event.value.attributes.min_price} – ${event.value.attributes.max_price} AMD`
+      : `${event.value.attributes.min_price} AMD`,
+  };
+});
 const coverUrl = computed<string>(() => {
   return `${(event.value as IEvent).attributes.cover.data.attributes.url}`;
 });
+const availableLocales = computed<IAvailableLocale[]>(() => {
+  if (!event.value) return [];
+
+  const localizationsArr = event.value?.attributes.localizations.data;
+
+  if (!localizationsArr?.length) return [];
+
+  return [
+    { id: event.value.id, locale: event.value.attributes.locale },
+    ...localizationsArr.map(l => {
+      return {
+        id: l.id,
+        locale: l.attributes.locale,
+      };
+    }),
+  ];
+});
+
+// if (event.value) {
+//   const { date, month, time, priceRange } = useEventComputed(
+//     event.value?.attributes?.datetime,
+//     event.value?.attributes?.min_price,
+//     event.value?.attributes?.max_price,
+//   );
+//
+//   eventInfo.date = date.value;
+//   eventInfo.month = month.value;
+//   eventInfo.time = time.value;
+//   eventInfo.priceRange = priceRange.value;
+// }
 
 const getEventHandler = async () => {
   isLoading.value = true;
 
-  // await delay(500);
   await getEvent(route.params.eventId as string);
+  currentLocalizedEventId.value = +route.params.eventId;
 
-  const { date, month, year, time, priceRange } = useEventComputed(
-    (event.value as IEvent).attributes.datetime,
-    (event.value as IEvent).attributes.min_price,
-    (event.value as IEvent).attributes.max_price,
-  );
+  // const { date, month, year, time, priceRange } = useEventComputed(
+  //   (event.value as IEvent).attributes.datetime,
+  //   (event.value as IEvent).attributes.min_price,
+  //   (event.value as IEvent).attributes.max_price,
+  // );
 
-  eventInfo.date = date.value;
-  eventInfo.month = month.value;
-  eventInfo.year = year.value;
-  eventInfo.time = time.value;
-  eventInfo.priceRange = priceRange.value;
+  // eventInfo.date = date.value;
+  // eventInfo.month = month.value;
+  // eventInfo.year = year.value;
+  // eventInfo.time = time.value;
+  // eventInfo.priceRange = priceRange.value;
 
   isLoading.value = false;
 };
@@ -159,6 +223,19 @@ watch(eventDescription, value => {
     link.style.textDecoration = "underline";
     link.setAttribute("target", "_blank");
   });
+});
+
+watch(locale, value => {
+  if (!availableLocales.value.length) return;
+
+  currentLocalizedEventId.value = (availableLocales.value.find(l => l.locale === value) as IAvailableLocale).id;
+});
+
+watch(currentLocalizedEventId, (value, oldValue) => {
+  if (!oldValue || !value) return;
+
+  getEvent(String(value));
+  route.params.eventId = String(value);
 });
 
 onUnmounted(() => {

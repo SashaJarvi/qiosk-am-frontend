@@ -12,8 +12,8 @@
         <the-loader v-if="isGettingMoreEvents" />
 
         <div class="container">
-          <router-link :to="route.params.archived ? '/archive' : '/'" class="back-btn">
-            <span>Вернуться назад</span>
+          <router-link :to="Tr.i18nRoute({ name: 'home' })" class="back-btn">
+            <span>{{ $t("event.back") }}</span>
             <img src="/images/arrows/arrow-left.svg" alt="arrow-left" />
           </router-link>
         </div>
@@ -25,51 +25,59 @@
 </template>
 
 <script setup lang="ts">
-import { ref, provide, defineAsyncComponent } from "vue";
+import { ref, provide, defineAsyncComponent, watch } from "vue";
 import type { Ref } from "vue";
 import { storeToRefs } from "pinia";
-import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
 import { useEventsStore } from "@/stores/events";
 import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
 import type { IEventCategory } from "@/ts/interfaces/event-category";
-import delay from "@/utils/delay";
+import Tr from "@/i18n/translation";
 import TheLoader from "@/components/TheLoader.vue";
 
 const EventCards = defineAsyncComponent(() => import("@/components/EventCards.vue"));
 
-const route = useRoute();
+const { locale } = useI18n();
 
-const { categorizedEvents } = storeToRefs(useEventsStore());
+const { events, eventsToShow, categorizedEvents } = storeToRefs(useEventsStore());
 const { eventsCategories } = storeToRefs(useEventsCategoriesStore());
-const { getEvents, clearEvents } = useEventsStore();
-const { getEventsCategories } = useEventsCategoriesStore();
+const { getEvents, setEventsToShow, resetEventsToShow, clearEvents } = useEventsStore();
+const { getEventsCategories, clearCategory } = useEventsCategoriesStore();
 
 const isLoading: Ref<boolean> = ref(false);
 const isGettingMoreEvents: Ref<boolean> = ref(false);
 
-const getEventsHandler = async () => {
+const getEventsHandler = () => {
+  if ((events.value as IEvent[]).length <= eventsToShow.value) return;
+
   isGettingMoreEvents.value = true;
 
-  await getEvents({ archived: true, hasInternalDelay: true });
-
-  isGettingMoreEvents.value = false;
+  setTimeout(() => {
+    setEventsToShow();
+    isGettingMoreEvents.value = false;
+  }, 300);
 };
 
 const getDataHandler = async () => {
   isLoading.value = true;
+  clearCategory();
 
-  // await delay(500);
   await clearEvents();
   await getEventsCategories();
-  await getEvents({ archived: true });
+  await getEvents(true);
+  resetEventsToShow();
 
   isLoading.value = false;
 };
 
-getDataHandler();
+watch(locale, () => {
+  getDataHandler();
+});
 
 provide("archived", true);
+
+getDataHandler();
 </script>
 
 <style lang="scss" scoped>

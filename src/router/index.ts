@@ -1,28 +1,44 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, RouterView } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import Tr from "@/i18n/translation";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
-      name: "home",
-      component: HomeView,
+      path: "/:locale?",
+      component: RouterView,
+      beforeEnter: Tr.routeMiddleware,
+      children: [
+        {
+          path: "",
+          name: "home",
+          component: HomeView,
+        },
+        {
+          path: "event/:eventId",
+          name: "event-page",
+          component: () => import("@/views/EventView.vue"),
+        },
+        {
+          path: "archive",
+          name: "events-archive",
+          component: () => import("@/views/ArchiveView.vue"),
+        },
+        {
+          path: "refund-policy",
+          name: "refund-policy",
+          component: () => import("@/views/RefundPolicyView.vue"),
+        },
+      ],
     },
     {
-      path: "/event/:eventId",
-      name: "event-page",
-      component: () => import("@/views/EventView.vue"),
-    },
-    {
-      path: "/archive",
-      name: "events-archive",
-      component: () => import("@/views/ArchiveView.vue"),
-    },
-    {
-      path: "/refund-policy",
-      name: "refund-policy",
-      component: () => import("@/views/RefundPolicyView.vue"),
+      path: "/login",
+      name: "login",
+      component: () => import("@/views/LoginView.vue"),
+      beforeEnter(to, from, next) {
+        window.location.href = "https://qiosk.tickettool.net/login";
+      },
     },
   ],
 });

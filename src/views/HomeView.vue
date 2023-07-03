@@ -3,10 +3,9 @@
     <transition v-if="!isLoading && categorizedEvents" name="events-fade" mode="out-in" appear>
       <div>
         <event-cards
-          :events="(categorizedEvents as IEvent[])"
-          :events-categories="eventsCategories as IEventCategory[]"
+          :events="categorizedEvents"
+          :events-categories="nonEmptyEventsCategories"
           @load-more="getEventsHandler"
-          @update-search-str="searchEventsHandler"
         />
 
         <the-loader v-if="isGettingMoreEvents" />
@@ -18,58 +17,54 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref } from "vue";
+import { defineAsyncComponent, ref, watch } from "vue";
 import type { Ref } from "vue";
 import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
 import { useEventsStore } from "@/stores/events";
 import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
-import type { IEventCategory } from "@/ts/interfaces/event-category";
-import delay from "@/utils/delay";
 import TheLoader from "@/components/TheLoader.vue";
 
 const EventCards = defineAsyncComponent(() => import("@/components/EventCards.vue"));
 
-const { categorizedEvents } = storeToRefs(useEventsStore());
-const { eventsCategories } = storeToRefs(useEventsCategoriesStore());
-const { getEvents, searchEvents, clearEvents, clearSearchedEvents } = useEventsStore();
-const { getEventsCategories } = useEventsCategoriesStore();
+const { locale } = useI18n();
+
+const { events, eventsToShow, categorizedEvents } = storeToRefs(useEventsStore());
+const { nonEmptyEventsCategories } = storeToRefs(useEventsCategoriesStore());
+const { getEvents, setEventsToShow, resetEventsToShow, clearEvents, clearSearch } = useEventsStore();
+const { getEventsCategories, clearCategory } = useEventsCategoriesStore();
 
 const isLoading: Ref<boolean> = ref(false);
 const isGettingMoreEvents: Ref<boolean> = ref(false);
 
-const getEventsHandler = async () => {
+const getEventsHandler = () => {
+  if ((events.value as IEvent[]).length <= eventsToShow.value) return;
+
   isGettingMoreEvents.value = true;
 
-  await getEvents({ hasInternalDelay: true });
-
-  isGettingMoreEvents.value = false;
-};
-
-const searchEventsHandler = async (searchStr: string) => {
-  if (!searchStr) {
-    clearSearchedEvents();
-    return;
-  }
-
-  isLoading.value = true;
-
-  // await delay(500);
-  await searchEvents(searchStr);
-
-  isLoading.value = false;
+  setTimeout(() => {
+    setEventsToShow();
+    isGettingMoreEvents.value = false;
+  }, 300);
 };
 
 const getDataHandler = async () => {
   isLoading.value = true;
+  clearSearch();
 
-  // await delay(500);
   await clearEvents();
   await getEventsCategories();
   await getEvents();
+  resetEventsToShow();
 
   isLoading.value = false;
 };
+
+watch(locale, () => {
+  clearCategory();
+  getDataHandler();
+});
 
 getDataHandler();
 </script>

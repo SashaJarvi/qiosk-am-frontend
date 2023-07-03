@@ -1,0 +1,11 @@
+.switcher {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  &__btn {
+    &.selected {
+      font-weight: 700;
+    }
+  }
+}

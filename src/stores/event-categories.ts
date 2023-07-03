@@ -1,16 +1,25 @@
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import type { Ref } from "vue";
 import { defineStore } from "pinia";
-import api from "@/api";
 import type { IEventCategory } from "@/ts/interfaces/event-category";
+import api from "@/api";
+import { useI18n } from "vue-i18n";
 
 export const useEventsCategoriesStore = defineStore("events-categories", () => {
+  const { locale } = useI18n();
+
   const eventsCategories: Ref<IEventCategory[] | null> = ref(null);
   const eventsCategory: Ref<IEventCategory | null> = ref(null);
 
+  const nonEmptyEventsCategories = computed<IEventCategory[]>(() => {
+    if (!eventsCategories.value?.length) return [];
+
+    return eventsCategories.value.filter(c => !!c.attributes.events.data.length);
+  });
+
   const getEventsCategories = async () => {
     return api
-      .get("event-categories")
+      .get(`event-categories?locale=${locale.value}&populate[0]=events`)
       .then(res => res.json())
       .then(({ data }) => (eventsCategories.value = data));
   };
@@ -26,6 +35,7 @@ export const useEventsCategoriesStore = defineStore("events-categories", () => {
   return {
     eventsCategories,
     eventsCategory,
+    nonEmptyEventsCategories,
     getEventsCategories,
     selectEventCategory,
     clearCategory,

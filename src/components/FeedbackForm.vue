@@ -3,11 +3,17 @@
     <transition name="form-fade" mode="in-out" appear>
       <div class="form-popup">
         <form class="form" @submit.prevent="submitHandler">
-          <h3 class="form__title">Обратная связь</h3>
+          <h3 class="form__title">{{ $t("forms.feedback") }}</h3>
 
           <div class="form__item">
-            <input v-model="formData.name" type="text" name="name" class="form__input" placeholder="Имя:" />
-            <label class="error" v-if="v$.name.required.$invalid"> Введите имя </label>
+            <input
+              v-model="formData.name"
+              type="text"
+              name="name"
+              class="form__input"
+              :placeholder="`${$t('forms.name')}:`"
+            />
+            <label class="error" v-if="v$.name.required.$invalid"> {{ $t("forms.enter-name") }} </label>
           </div>
 
           <div class="form__item">
@@ -18,8 +24,8 @@
               class="form__input form__input-email"
               placeholder="E-mail:"
             />
-            <label class="error" v-if="v$.email.required.$invalid"> Введите email </label>
-            <label class="error" v-if="v$.email.email.$invalid"> Введите email в корректном формате </label>
+            <label class="error" v-if="v$.email.required.$invalid"> {{ $t("forms.enter-email") }} </label>
+            <label class="error" v-if="v$.email.email.$invalid"> {{ $t("forms.enter-correct-email") }} </label>
           </div>
 
           <div class="form__item">
@@ -27,12 +33,12 @@
               v-model="formData.message"
               name="message"
               class="from__message"
-              placeholder="Сообщение:"
+              :placeholder="$t('forms.message')"
             ></textarea>
-            <label class="error" v-if="v$.message.required.$invalid"> Введите сообщение </label>
+            <label class="error" v-if="v$.message.required.$invalid"> {{ $t("forms.enter-message") }} </label>
           </div>
 
-          <button type="submit" class="form-popup__btn" :disabled="isSending">Отправить сообщение</button>
+          <button type="submit" class="form-popup__btn" :disabled="isSending">{{ $t("forms.send-message") }}</button>
 
           <button @click="emit('close')" class="form-popup__close">
             <img src="/images/contacts/close.svg" alt="close" />
@@ -41,13 +47,13 @@
 
         <div v-show="showSuccessMsg" class="contact-form__success">
           <h2>
-            Заявка принята!<br />
-            Мы свяжемся с&nbsp;Вами в&nbsp;ближайшее время!
+            {{ $t("forms.request-accepted") }}<br />
+            {{ $t("forms.we-will-contact") }}
           </h2>
         </div>
 
         <div v-show="showErrorMessage" class="contact-form__error">
-          <h2>Произошла ошибка, попробуйте еще раз</h2>
+          <h2>{{ $t("forms.error") }}</h2>
         </div>
       </div>
     </transition>
