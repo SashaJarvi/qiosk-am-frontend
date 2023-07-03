@@ -47,19 +47,22 @@
       </nav>
 
       <p
-        v-if="(searchStr && !searchedEvents.length) || (searchedEvents.length && !visibleEvents.length)"
+        v-if="
+          (searchStr && searchStr.length > 3 && !searchedEvents.length) ||
+          (searchedEvents.length && !visibleEvents.length)
+        "
         class="events__no-cards"
       >
         {{ $t("events.not-found") }}
         <button @click="resetSearch">{{ $t("events.click-to-show") }}</button>
       </p>
 
-      <div v-else-if="visibleEvents.length" class="events__cards">
+      <div v-else-if="visibleEvents.length <= categorizedEvents.length" class="events__cards">
         <event-card v-for="event in visibleEvents" :key="event.id" :event="event" />
         <the-observer @intersect="intersectCatch" />
       </div>
 
-      <p v-else class="events__no-cards">{{ $t("events.empty") }}</p>
+      <p v-else-if="!categorizedEvents.length" class="events__no-cards">{{ $t("events.empty") }}</p>
     </div>
   </section>
 </template>
@@ -78,7 +81,7 @@ import TheObserver from "@/components/TheObserver.vue";
 
 const route = useRoute();
 
-const { searchStr, searchedEvents, visibleEvents } = storeToRefs(useEventsStore());
+const { searchStr, searchedEvents, visibleEvents, categorizedEvents } = storeToRefs(useEventsStore());
 const { eventsCategory } = storeToRefs(useEventsCategoriesStore());
 const { selectEventCategory, clearCategory } = useEventsCategoriesStore();
 

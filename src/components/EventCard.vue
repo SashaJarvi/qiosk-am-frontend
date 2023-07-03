@@ -10,7 +10,19 @@
       "
     >
       <div class="card__img">
-        <img :alt="event.attributes.title" :src="coverUrl" />
+        <picture>
+          <source
+            v-if="event.attributes.cover.data.attributes.formats.small?.url"
+            media="(max-width: 599px)"
+            :srcset="event.attributes.cover.data.attributes.formats.small?.url"
+          />
+          <source
+            v-if="event.attributes.cover.data.attributes.formats.medium?.url"
+            media="(max-width: 768px)"
+            :srcset="event.attributes.cover.data.attributes.formats.medium?.url"
+          />
+          <img :src="coverUrl" :alt="event.attributes.title" />
+        </picture>
       </div>
     </router-link>
 

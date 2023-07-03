@@ -24,7 +24,7 @@ export const useEventsStore = defineStore("events", () => {
   const { eventsCategory } = storeToRefs(useEventsCategoriesStore());
 
   const searchedEvents = computed<IEvent[]>(() => {
-    if (!events.value.length || !searchStr.value) return [];
+    if (!events.value.length || !searchStr.value || searchStr.value.length < 3) return [];
 
     return events.value.filter(event => {
       const lowerSearchStr = searchStr.value.toLowerCase();
@@ -60,6 +60,8 @@ export const useEventsStore = defineStore("events", () => {
 
   const visibleEvents = computed<IEvent[]>(() => {
     if (!categorizedEvents.value.length) return [];
+
+    if (searchedEvents.value.length) return searchedEvents.value;
 
     return eventsToShow.value === categorizedEvents.value.length
       ? categorizedEvents.value
@@ -103,11 +105,6 @@ export const useEventsStore = defineStore("events", () => {
 
   const setEventsToShow = () => {
     const basicValue: number = 3;
-
-    if (eventsToShow.value >= (events.value as IEvent[]).length) {
-      eventsToShow.value = (events.value as IEvent[]).length;
-      return;
-    }
 
     eventsToShow.value += basicValue;
   };
