@@ -30,7 +30,7 @@ const EventCards = defineAsyncComponent(() => import("@/components/EventCards.vu
 
 const { locale } = useI18n();
 
-const { events, eventsToShow, categorizedEvents } = storeToRefs(useEventsStore());
+const { events, eventsToShow, categorizedEvents, visibleEvents } = storeToRefs(useEventsStore());
 const { nonEmptyEventsCategories } = storeToRefs(useEventsCategoriesStore());
 const { getEvents, setEventsToShow, resetEventsToShow, clearEvents, clearSearch } = useEventsStore();
 const { getEventsCategories, clearCategory } = useEventsCategoriesStore();
@@ -39,8 +39,6 @@ const isLoading: Ref<boolean> = ref(false);
 const isGettingMoreEvents: Ref<boolean> = ref(false);
 
 const getEventsHandler = () => {
-  if ((events.value as IEvent[]).length <= eventsToShow.value) return;
-
   isGettingMoreEvents.value = true;
 
   setTimeout(() => {
