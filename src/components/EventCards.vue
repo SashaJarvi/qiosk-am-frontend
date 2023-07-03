@@ -79,7 +79,7 @@ import TheObserver from "@/components/TheObserver.vue";
 const route = useRoute();
 
 const { searchStr, searchedEvents, visibleEvents } = storeToRefs(useEventsStore());
-const { eventsCategory, nonEmptyEventsCategories } = storeToRefs(useEventsCategoriesStore());
+const { eventsCategory } = storeToRefs(useEventsCategoriesStore());
 const { selectEventCategory, clearCategory } = useEventsCategoriesStore();
 
 defineProps<{

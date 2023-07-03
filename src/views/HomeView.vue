@@ -24,7 +24,6 @@ import { useI18n } from "vue-i18n";
 import { useEventsStore } from "@/stores/events";
 import { useEventsCategoriesStore } from "@/stores/event-categories";
 import type { IEvent } from "@/ts/interfaces/event";
-import type { IEventCategory } from "@/ts/interfaces/event-category";
 import TheLoader from "@/components/TheLoader.vue";
 
 const EventCards = defineAsyncComponent(() => import("@/components/EventCards.vue"));
@@ -32,7 +31,7 @@ const EventCards = defineAsyncComponent(() => import("@/components/EventCards.vu
 const { locale } = useI18n();
 
 const { events, eventsToShow, categorizedEvents } = storeToRefs(useEventsStore());
-const { eventsCategories, nonEmptyEventsCategories } = storeToRefs(useEventsCategoriesStore());
+const { nonEmptyEventsCategories } = storeToRefs(useEventsCategoriesStore());
 const { getEvents, setEventsToShow, resetEventsToShow, clearEvents, clearSearch } = useEventsStore();
 const { getEventsCategories, clearCategory } = useEventsCategoriesStore();
 
