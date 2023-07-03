@@ -156,13 +156,11 @@
 .events__cards {
   display: flex;
   flex-direction: column;
-  row-gap: 50px;
-
+  row-gap: 70px;
 
   @media (max-width: 1199px) {
     row-gap: 150px;
   }
-
 
   @media (max-width: 599px) {
     row-gap: 200px;
