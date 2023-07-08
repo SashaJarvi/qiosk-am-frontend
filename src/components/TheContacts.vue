@@ -23,7 +23,7 @@
 
         <div class="contacts__links-wrapper">
           <div class="contacts__links">
-            <a href="tel:37477233503">+374 77 233 503</a>
+            <a href="tel:+37493115534">+374 93 115 534</a>
           </div>
 
           <ul class="contacts__payments">
